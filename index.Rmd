@@ -1,0 +1,57 @@
+---
+title: "Benjamin Lira Luttges"
+output: html_document
+---
+
+```{=html}
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+```
+<div class="row" style="padding-top: 30px;">
+
+::: {.col-sm-6}
+# **Benjamin Lira Luttges**
+
+I am a graduate student at the [University of Pennsylvania](upenn.edu). I am working with Dr. Angela Duckworth.
+
+I hope to contribute to psychological science by improving our understanding on how adversity affects self-control. Hopefully, this knowledge can be used in the future for the development of targeted interventions that help children and adolescents develop strategies to bridge the self-control gap between the rich and the poor.
+
+<iframe src="https://calendar.google.com/calendar/embed?src=blira%40characterlab.org&ctz=America%2FNew_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
+## Useful links
+
+Here is my [Google Scholar Page](https://scholar.google.com/citations?user=St3vJckAAAAJ&hl=en), my active projects document, and my CV.
+
+<form
+  action="https://formspree.io/f/mdopqldn"
+  method="POST"
+>
+  <label>
+    Your email:
+    <input type="email" name="_replyto">
+  </label>
+  <label>
+    Your message:
+    </br>
+    <textarea name="message"></textarea>
+  </label>
+
+  <!-- your other form fields go here -->
+
+  <button type="submit">Send</button>
+</form>
+:::
+
+::: {.col-sm-6}
+```{r,echo=FALSE}
+knitr::include_graphics("Images/Benji.jpg")
+```
+:::

@@ -1,0 +1,25 @@
+---
+title: "Publications"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+E Gleichgerrcht, **B Lira Luttges**, F Salvarezza, AL Campos (2015)
+Educational neuromyths among teachers in Latin America. Mind, Brain, and
+Education 9 (3), 170-178
+
+**B Lira-Luttges** (2017) El rol predictor de la regulación emocional,
+la empatía y la alexitimia en el control intencional de niños y niñas de
+educación inicial. Universidad de Lima.
+
+D Herrera, L Matos, R Gargurevich, **B Lira**, R Valenzuela (2021)
+Context Matters: Teaching Styles and Basic Psychological Needs
+Predicting Flourishing and Perfectionism in University Music Students.
+Frontiers in Psychology 12, 438
+
+A Duckworth, T Kautz, A Defnet, E Satlof-Bedrick, SN Talamas, B Lira
+Luttges, .... Students Attending School Remotely Suffer Socially,
+Emotionally, and Academically.
+[[PsyArXiv](https://mfr.osf.io/export?format=pdf&url=https%3A//files.osf.io/v1/resources/rpz7h/providers/osfstorage/60216615339cb6013acf0da8%3Fformat%3Dpdf%26action%3Ddownload%26direct%26version%3D1)]
