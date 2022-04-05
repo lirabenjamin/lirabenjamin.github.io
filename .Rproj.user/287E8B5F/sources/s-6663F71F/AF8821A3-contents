@@ -1,0 +1,14 @@
+name: "Benjamin Lira Luttges"
+navbar:
+  title: "Benjamin Lira Luttges"
+  left:
+    # - text: "Home"
+    #   href: index.html
+    - text: "Publications"
+      href: Publications.html
+    - text: "Blog"
+      href: Blog.html
+    - text: "Other Projects"
+      href: Other_Projects.html
+      
+output_dir: "docs"

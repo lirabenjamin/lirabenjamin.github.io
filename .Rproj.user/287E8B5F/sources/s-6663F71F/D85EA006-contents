@@ -11,7 +11,7 @@
 
 
 
-<title>Publications</title>
+<title>Benjamin Lira Luttges</title>
 
 <script src="site_libs/header-attrs-2.7.5/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -262,15 +262,46 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Publications</h1>
+<h1 class="title toc-ignore">Benjamin Lira Luttges</h1>
 
 </div>
 
 
-<p>E Gleichgerrcht, <strong>B Lira Luttges</strong>, F Salvarezza, AL Campos (2015) Educational neuromyths among teachers in Latin America. Mind, Brain, and Education 9 (3), 170-178</p>
-<p><strong>B Lira-Luttges</strong> (2017) El rol predictor de la regulación emocional, la empatía y la alexitimia en el control intencional de niños y niñas de educación inicial. Universidad de Lima.</p>
-<p>D Herrera, L Matos, R Gargurevich, <strong>B Lira</strong>, R Valenzuela (2021) Context Matters: Teaching Styles and Basic Psychological Needs Predicting Flourishing and Perfectionism in University Music Students. Frontiers in Psychology 12, 438</p>
-<p>A Duckworth, T Kautz, A Defnet, E Satlof-Bedrick, SN Talamas, B Lira Luttges, …. Students Attending School Remotely Suffer Socially, Emotionally, and Academically. [<a href="https://mfr.osf.io/export?format=pdf&amp;url=https%3A//files.osf.io/v1/resources/rpz7h/providers/osfstorage/60216615339cb6013acf0da8%3Fformat%3Dpdf%26action%3Ddownload%26direct%26version%3D1">PsyArXiv</a>]</p>
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+<div class="row" style="padding-top: 30px;">
+
+<div id="benjamin-lira-luttges" class="section level1 col-sm-6">
+<h1><strong>Benjamin Lira Luttges</strong></h1>
+<p>I am a graduate student at the <a href="upenn.edu">University of Pennsylvania</a>. I am working with Dr. Angela Duckworth.</p>
+<p>I hope to contribute to psychological science by improving our understanding on how adversity affects self-control. Hopefully, this knowledge can be used in the future for the development of targeted interventions that help children and adolescents develop strategies to bridge the self-control gap between the rich and the poor.</p>
+<iframe src="https://calendar.google.com/calendar/embed?src=blira%40characterlab.org&amp;ctz=America%2FNew_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no">
+</iframe>
+<div id="useful-links" class="section level2">
+<h2>Useful links</h2>
+<p>Here is my <a href="https://scholar.google.com/citations?user=St3vJckAAAAJ&amp;hl=en">Google Scholar Page</a>, my active projects document, and my CV.</p>
+<form action="https://formspree.io/f/mdopqldn" method="POST">
+<label> Your email: <input type="email" name="_replyto"> </label> <label> Your message: </br>
+<textarea name="message"></textarea>
+<p></label></p>
+<!-- your other form fields go here -->
+<button type="submit">
+Send
+</button>
+</form>
+</div>
+</div>
+<div class="col-sm-6">
+<p><img src="images/Benji.jpg" width="1374" /></p>
+</div>
 
 
 
