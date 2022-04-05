@@ -3,7 +3,7 @@
     "path": "~/Documents/GitHub/lirabenjamin.github.io/index.Rmd",
     "project_path": "index.Rmd",
     "type": "r_markdown",
-    "hash": "3952884375",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1649200547697.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "31,0",
-        "scrollLine": "29"
+        "cursorPosition": "57,23",
+        "scrollLine": "35"
     },
     "folds": "",
-    "lastKnownWriteTime": 1649201714,
+    "lastKnownWriteTime": 1649202195,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1649201714423,
+    "last_content_update": 1649202195043,
     "read_only": false,
     "read_only_alternatives": []
 }

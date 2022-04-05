@@ -54,4 +54,6 @@ Here is my [Google Scholar Page](https://scholar.google.com/citations?user=St3vJ
 ```{r,echo=FALSE}
 knitr::include_graphics("Images/Benji.jpg")
 ```
+PhD Student
+University of Pennsylvania
 :::
