@@ -8,8 +8,8 @@ navbar:
       href: https://lirabenjamin.github.io/CV.pdf
     - text: "Publications"
       href: Publications.html
-    - text: "Blog"
-      href: Blog.html
+    # - text: "Blog"
+    #   href: Blog.html
     - text: "Other Projects"
       href: Other_Projects.html
       
