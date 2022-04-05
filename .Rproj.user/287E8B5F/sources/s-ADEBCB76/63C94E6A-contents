@@ -20,7 +20,7 @@ output: html_document
 ::: {.col-sm-6}
 # **Benjamin Lira Luttges**
 
-I am a first year graduate student in Psychology at the [University of Pennsylvania](upenn.edu). I am working with Dr. Angela Duckworth.
+I am a first year graduate student in Psychology at the [University of Pennsylvania](upenn.edu). I am working with [Dr. Angela Duckworth](angeladuckworth.com).
 
 I hope to contribute to psychological science by improving our understanding on how adversity affects self-control. Hopefully, this knowledge can be used in the future for the development of targeted interventions that help children and adolescents develop strategies to bridge the self-control gap between the rich and the poor. My work has been published in *Educational Researcher*.
 
@@ -54,6 +54,15 @@ Here is my [Google Scholar Page](https://scholar.google.com/citations?user=St3vJ
 ```{r,echo=FALSE}
 knitr::include_graphics("Images/Benji.jpg")
 ```
-PhD Student
-**University of Pennsylvania**
+<center>
+<p style="margin-bottom:0;">
+    PhD Student
+</p>
+<p style="margin : 0; padding-top:0;">
+    **University of Pennsylvania**
+</p>
+</center>
+
+
+
 :::
