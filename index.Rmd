@@ -28,7 +28,7 @@ Prior to my doctoral studies at Penn, I graduated summa cum laude from the Unive
 
 <!-- <iframe src="https://calendar.google.com/calendar/embed?src=blira%40characterlab.org&ctz=America%2FNew_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
 
-Here is my [Google Scholar Page](https://scholar.google.com/citations?user=St3vJckAAAAJ&hl=en), my active projects document, and my CV.
+Here is my [Google Scholar Page](https://scholar.google.com/citations?user=St3vJckAAAAJ&hl=en), and my [CV](https://lirabenjamin.github.io/CV.pdf).
 
 <!-- <form -->
 <!--   action="https://formspree.io/f/mdopqldn" -->
