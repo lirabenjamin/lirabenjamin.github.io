@@ -13,8 +13,8 @@
 
 <title>Publications</title>
 
-<script src="site_libs/header-attrs-2.7.5/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -80,6 +81,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -137,11 +141,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -170,8 +178,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -179,16 +187,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -232,7 +233,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -267,12 +268,38 @@ $(document).ready(function () {
 </div>
 
 
-<p>My current number of citations is 146, and my h-index is 2.</p>
-<p>Duckworth, A. L., Kautz, T., Defnet, A., Satlof-Bedrick, E., Talamas, S., <strong>Lira, B.,</strong> &amp; Steinberg, L. (2021). Students attending school remotely suffer socially, emotionally, and academically. <em>Educational Researcher, 50</em>(7), 479-482. <a href="https://mfr.osf.io/export?format=pdf&amp;url=https%3A//files.osf.io/v1/resources/rpz7h/providers/osfstorage/60216615339cb6013acf0da8%3Fformat%3Dpdf%26action%3Ddownload%26direct%26version%3D1">[PsyArXiv]</a> <a href="https://journals.sagepub.com/doi/pdf/10.3102/0013189X211031551">[PDF]</a></p>
-<p>Barcenilla, C. C., <strong>Lira Luttges, B.,</strong> Rojas-Barahona, C. A., &amp; Campos, A. L. (2021). Psychometric analysis of the Children’s Behavior Questionnaire (CBQ) in Chile. <em>Current Psychology</em>, 1-10. <a href="https://link.springer.com/content/pdf/10.1007/s12144-021-01871-9.pdf">[PDF]</a></p>
-<p>Herrera, D., Matos, L., Gargurevich, R., <strong>Lira, B.,</strong> &amp; Valenzuela, R. (2021). Context Matters: Teaching Styles and Basic Psychological Needs Predicting Flourishing and Perfectionism in University Music Students. <em>Frontiers in Psychology, 12</em>, 438. <a href="https://www.readcube.com/articles/10.3389/fpsyg.2021.623312">[PDF]</a></p>
-<p><strong>B Lira-Luttges</strong> (2017) El rol predictor de la regulación emocional, la empatía y la alexitimia en el control intencional de niños y niñas de educación inicial. Universidad de Lima. <a href="http://repositorio-anterior.ulima.edu.pe/bitstream/handle/ulima/3295/Lira_Luttges_Benjamin.pdf?sequence=1&amp;isAllowed=y">[PDF]</a></p>
-<p>Gleichgerrcht, E., <strong>Lira Luttges, B.,</strong> Salvarezza, F., &amp; Campos, A. L. (2015). Educational neuromyths among teachers in Latin America. <em>Mind, Brain, and Education, 9</em>(3), 170-178. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mbe.12086">[Link]</a></p>
+<p>My current number of citations is 192, and my h-index is 3.</p>
+<p>Lopez de Pomar, F.E,, &amp; <strong>Lira, B.</strong> (2022).
+Evaluación psicométrica de una escala de creencias conspirativas para
+población peruana [Psychometric evaluation of a conspiracy belief scale
+for the Peruvian population]. <em>Persona 25</em>(1), 33-51. <a
+href="https://revistas.ulima.edu.pe/index.php/Persona/article/view/5870/5801">[PDF]</a></p>
+<p>Duckworth, A. L., Kautz, T., Defnet, A., Satlof-Bedrick, E., Talamas,
+S., <strong>Lira, B.,</strong> &amp; Steinberg, L. (2021). Students
+attending school remotely suffer socially, emotionally, and
+academically. <em>Educational Researcher, 50</em>(7), 479-482. <a
+href="https://mfr.osf.io/export?format=pdf&amp;url=https%3A//files.osf.io/v1/resources/rpz7h/providers/osfstorage/60216615339cb6013acf0da8%3Fformat%3Dpdf%26action%3Ddownload%26direct%26version%3D1">[PsyArXiv]</a>
+<a
+href="https://journals.sagepub.com/doi/epdf/10.3102/0013189X211031551">[PDF]</a></p>
+<p>Barcenilla, C. C., <strong>Lira Luttges, B.,</strong> Rojas-Barahona,
+C. A., &amp; Campos, A. L. (2021). Psychometric analysis of the
+Children’s Behavior Questionnaire (CBQ) in Chile. <em>Current
+Psychology</em>, 1-10. <a
+href="https://link.springer.com/content/pdf/10.1007/s12144-021-01871-9.pdf">[PDF]</a></p>
+<p>Herrera, D., Matos, L., Gargurevich, R., <strong>Lira, B.,</strong>
+&amp; Valenzuela, R. (2021). Context Matters: Teaching Styles and Basic
+Psychological Needs Predicting Flourishing and Perfectionism in
+University Music Students. <em>Frontiers in Psychology, 12</em>, 438. <a
+href="https://www.readcube.com/articles/10.3389/fpsyg.2021.623312">[PDF]</a></p>
+<p><strong>Lira Luttges, B.</strong> (2017) El rol predictor de la
+regulación emocional, la empatía y la alexitimia en el control
+intencional de niños y niñas de educación inicial. Universidad de Lima.
+<a
+href="http://repositorio-anterior.ulima.edu.pe/bitstream/handle/ulima/3295/Lira_Luttges_Benjamin.pdf?sequence=1&amp;isAllowed=y">[PDF]</a></p>
+<p>Gleichgerrcht, E., <strong>Lira Luttges, B.,</strong> Salvarezza, F.,
+&amp; Campos, A. L. (2015). Educational neuromyths among teachers in
+Latin America. <em>Mind, Brain, and Education, 9</em>(3), 170-178. <a
+href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mbe.12086">[Link]</a></p>
 
 
 

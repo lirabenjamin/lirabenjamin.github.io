@@ -13,8 +13,8 @@
 
 <title>Benjamin Lira Luttges</title>
 
-<script src="site_libs/header-attrs-2.7.5/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -80,6 +81,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -137,11 +141,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -170,8 +178,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -179,16 +187,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -232,7 +233,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -281,11 +282,26 @@ $(document).ready(function () {
 
 <div id="benjamin-lira-luttges" class="section level1 col-sm-6">
 <h1><strong>Benjamin Lira Luttges</strong></h1>
-<p>I am a first year graduate student in Psychology at the <a href="upenn.edu">University of Pennsylvania</a>. I am working with <a href="angeladuckworth.com">Dr. Angela Duckworth</a>.</p>
-<p>I hope to contribute to psychological science by improving our understanding on how adversity affects self-control. Hopefully, this knowledge can be used in the future for the development of targeted interventions that help children and adolescents develop strategies to bridge the self-control gap between the rich and the poor. My work has been published in <em>Educational Researcher</em>.</p>
-<p>Prior to my doctoral studies at Penn, I graduated summa cum laude from the University of Lima with a BA and a licensure in Psychology, and worked developing interventions, trainings, and outreach on Educational Neuroscience and Psychology.</p>
+<p>I am a second year graduate student in Psychology at the <a
+href="upenn.edu">University of Pennsylvania</a>. I am working with <a
+href="angeladuckworth.com">Dr. Angela Duckworth</a>.</p>
+<p>I hope to contribute to psychological science by improving our
+understanding of how non-cognitive skills develop and how we can better
+assess them, and the practices that lead to their development. I employ
+network science methods to better understand how non-congitive skills
+develop and machine learning (particularly natural language processing)
+to better measure them and the practices that lead to their improvement.
+My work has been published in <em>Educational Researcher</em> and
+(forthcoming) <em>Nature Scientific Reports</em>.</p>
+<p>Prior to my doctoral studies at Penn, I graduated summa cum laude
+from the University of Lima with a BA and a licensure in Psychology, and
+worked developing interventions, training, and outreach on Educational
+Neuroscience and Psychology.</p>
 <!-- <iframe src="https://calendar.google.com/calendar/embed?src=blira%40characterlab.org&ctz=America%2FNew_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
-<p>Here is my <a href="https://scholar.google.com/citations?user=St3vJckAAAAJ&amp;hl=en">Google Scholar Page</a>, and my <a href="https://lirabenjamin.github.io/CV.pdf">CV</a>.</p>
+<p>Here is my <a
+href="https://scholar.google.com/citations?user=St3vJckAAAAJ&amp;hl=en">Google
+Scholar Page</a>, and my <a
+href="https://lirabenjamin.github.io/CV.pdf">CV</a>.</p>
 <!-- <form -->
 <!--   action="https://formspree.io/f/mdopqldn" -->
 <!--   method="POST" -->

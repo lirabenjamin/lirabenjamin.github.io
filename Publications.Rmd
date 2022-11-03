@@ -6,16 +6,18 @@ editor_options:
     wrap: 72
 ---
 
-My current number of citations is 146, and my h-index is 2.
+My current number of citations is 192, and my h-index is 3.
 
-Duckworth, A. L., Kautz, T., Defnet, A., Satlof-Bedrick, E., Talamas, S., **Lira, B.,** & Steinberg, L. (2021). Students attending school remotely suffer socially, emotionally, and academically. *Educational Researcher, 50*(7), 479-482. [[PsyArXiv]](https://mfr.osf.io/export?format=pdf&url=https%3A//files.osf.io/v1/resources/rpz7h/providers/osfstorage/60216615339cb6013acf0da8%3Fformat%3Dpdf%26action%3Ddownload%26direct%26version%3D1) [[PDF]](https://journals.sagepub.com/doi/pdf/10.3102/0013189X211031551)
+Lopez de Pomar, F.E,, & **Lira, B.** (2022). Evaluación psicométrica de una escala de creencias conspirativas para población peruana [Psychometric evaluation of a conspiracy belief scale for the Peruvian population]. *Persona 25*(1), 33-51. [[PDF]](https://revistas.ulima.edu.pe/index.php/Persona/article/view/5870/5801)
+
+Duckworth, A. L., Kautz, T., Defnet, A., Satlof-Bedrick, E., Talamas, S., **Lira, B.,** & Steinberg, L. (2021). Students attending school remotely suffer socially, emotionally, and academically. *Educational Researcher, 50*(7), 479-482. [[PsyArXiv]](https://mfr.osf.io/export?format=pdf&url=https%3A//files.osf.io/v1/resources/rpz7h/providers/osfstorage/60216615339cb6013acf0da8%3Fformat%3Dpdf%26action%3Ddownload%26direct%26version%3D1) [[PDF]](https://journals.sagepub.com/doi/epdf/10.3102/0013189X211031551)
 
 Barcenilla, C. C., **Lira Luttges, B.,** Rojas-Barahona, C. A., & Campos, A. L. (2021). Psychometric analysis of the Children’s Behavior Questionnaire (CBQ) in Chile. *Current Psychology*, 1-10. [[PDF]](https://link.springer.com/content/pdf/10.1007/s12144-021-01871-9.pdf)
 
 Herrera, D., Matos, L., Gargurevich, R., **Lira, B.,** & Valenzuela, R. (2021). Context Matters: Teaching Styles and Basic Psychological Needs Predicting Flourishing and Perfectionism in University Music Students. *Frontiers in Psychology, 12*, 438.
 [[PDF]](https://www.readcube.com/articles/10.3389/fpsyg.2021.623312)
 
-**B Lira-Luttges** (2017) El rol predictor de la regulación emocional,
+**Lira Luttges, B.** (2017) El rol predictor de la regulación emocional,
 la empatía y la alexitimia en el control intencional de niños y niñas de
 educación inicial. Universidad de Lima. [[PDF]](http://repositorio-anterior.ulima.edu.pe/bitstream/handle/ulima/3295/Lira_Luttges_Benjamin.pdf?sequence=1&isAllowed=y)
 
