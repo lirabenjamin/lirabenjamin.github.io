@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Blog</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Lira Luttges</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="https://lirabenjamin.github.io/CV.pdf">CV</a>
+</li>
+<li>
+  <a href="Publications.html">Publications</a>
+</li>
+<li>
+  <a href="Other_Projects.html">Other Projects</a>
+</li>
+<li>
+  <a href="News.html">News</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Blog</h1>
+
+</div>
+
+
+<div id="its-not-under-your-control-you-should-try-again"
+class="section level1">
+<h1>It’s not under your control: You should try again!</h1>
+<p>In most cases, when people think that things are under their control,
+they persist more. However, It appears this is not always the case, and
+there might be conditions under which people try harder in the presence
+of uncertainty. Gambling, for example, is notorious for generating
+highly persistent behavior that comes at a cost to the individual,
+despite it entailing a high amount of uncertainty.</p>
+<p>A separate but related case is that overweighting personal control
+(and underweighting the role of circumstance) leads to reduced effort,
+where more is warranted. When I took the GRE, I did fine, but not great.
+I wasn’t particularly motivated to try again, because I thought my score
+was unlikely to improve with the study I could do in the three week
+period. The increase in study time was marginal, so I predicted an
+equally marginal increase in my score. This led me to feel like spending
+$200 on the test made no sense. I was underestimating the role of
+outside factors and overemphasizing the role of studying on GRE
+performance. I wasn’t thinking that I might get questions for which I
+was more prepared, my mood might be better, and so on. Overestimating
+the amount of personal control I had over the score, probably had an
+undue impact on my motivation to persist. Maybe, had I been more aware
+of the randomness associated with my performance, I might have been more
+inclined to persist.</p>
+<p>Learned helplessness and random interval reinforcement In animal
+models, there are two paradigms that come to mind that deal with
+uncertainty and situations we can or can’t control. Learned helplessness
+and random interval reinforcement produce diverging behavioral
+responses, with both having an element of uncertainty.</p>
+<p>In learned helplessness, the animal quickly learns that its behavior
+cannot help it avoid an electric shock, so it quickly learns to give up.
+On random interval reinforcement, an animal might get rewarded after a
+random time, or a random amount of pecks to a button.</p>
+<p><strong>Figure 1.</strong> <em>Reinforcement schedules produce
+different behavioral responses (Stangor &amp; Walinga, 2014).</em></p>
+<p><img
+src="https://lh4.googleusercontent.com/kbpzics9wd9wixUvIpWjDKGvoR_Q62CeFQW4sOxaCdS3NydsdLuW6uSJItm80M9ybGHtIYPpQ1A4ZgiVUBiga5kTx4O5k_bYIXyOe9GbYVadxZZiVDfZKV21IXNFmGN6HdAYrBtE" /></p>
+<p>Why is random reinforcement motivating, whereas learned helplessness
+isn’t? Attribution theory might provide a framework for evaluating these
+questions.</p>
+<p>Some thoughts on attribution theory</p>
+<p>A 2x2 on influences/attribution – The one we discussed on our call We
+can split what affects performance in a 2x2. There are things relating
+to me (i.e., talent, learned skill, effort), and things that are
+environmental (i.e., discrimination, structural barriers, luck). These
+can also be classified as things that are mostly fixed (e.g,
+discrimination and talent), and things that are mostly variable (e.g.,
+skill and luck).</p>
+<p><strong>Figure 2.</strong> <em>A 2x2 of Dispositional/Situational and
+Controllable/Uncontrollable</em></p>
+<p><img
+src="https://lh5.googleusercontent.com/BOwvE64rQiZaT4OwXHaPQy2_0pMHg0R3GDsRyPsX5vCRyBO_rwNrVbFzcNf6z8UrRVUanZoV9kFnf82VYzoS-kp7pJfdZ4fdMY8THUgrnKZN_XpVmKpDPEZyAb-B85rry7tAaPE6" /></p>
+<p>It should be noted however that in our call we conflated the
+stability dimension with the controllability dimension. Learned
+helplessness is the generalization of lack of control after repeated
+exposure to negative uncontrollable and stable situations.</p>
+<p>Weiner’s attributional theory Weiner’s attributional theory (1985)
+posits a 2x2x2 of attribution composed of locus (situational
+vs. dispositional), controllability, and stability. The difference
+between stability and controllability explains why learned helplessness
+is so different from a random reinforcement schedule. In both learned
+helplessness and random reinforcement there is lack of control. However,
+learned helplessness is a stable uncontrollable situation (it is always
+the same and you can’t do anything about it), whereas random
+reinforcement schedules are unstable uncontrollable situations (it
+always changes, but you can’t control when the reward is coming).</p>
+<p>Uncertainty affects motivation differently whether it’s stable or
+unstable. If we think our achievement is determined by negative fixed
+environmental variables, we would try less hard. That is what is
+happening when an animal has learned helplessness. On the other hand,I
+don’t think there are strong predictions to be made when we interpret
+the situation to be partly uncontrollable, but unstable.</p>
+<p>Seligman’s model of explanatory style Marty’s model of exploratory
+style is also a 2x2x2, but instead of having a controllability
+dimension, it has a specificity/pervasiveness dimension that specifies
+whether the attribution is domain-specific (e.g., I flunked this
+particular test) vs. domain general (I am bad at school; Gillham, et
+al., 2001).</p>
+<p>I think Carol Dweck’s idea of a growth vs. a fixed mindset (Dweck
+&amp; Legget, 1988) has very much explained the origins and consequences
+of the stability dimension applied to the self. Far less is known about
+how we come to make judgments about the controllability and stability of
+a situation. These questions might be even more important in unfamiliar
+one-shot situations. When I take the GRE once, my growth/fixed mindset
+explains how stably I’ll judge my dispositional qualities. It might be
+hard for someone in that situation to calibrate how much my score might
+be dependent on unstable uncontrollable causes.</p>
+<p>It is likely that we might have a default position for how to judge
+the controllability and stability of a situation that might not be the
+ideal. Maybe nudging people to make the unstable or uncontrollable
+aspects of a situation more salient can improve perseverance.</p>
+<p>An experimental paradigm How might we devise a task to study these
+phenomena experimentally? Say we take a group of subjects and ask them
+to perform a game-like task from which they get a score. They are told
+that they are competing against other participants for prize money.
+After they are familiarized with the game, we might give them some
+feedback about what leads to good performance on the game, how it’s
+scored, and what was their performance.</p>
+<p>Performance on the task is largely explained by genetic causes
+Performance on the task is largely explained by practice Dispositional,
+uncontrollable, stable Dispositional, controllable, unstable Your score
+on the task is non-random Your score will have added or subtracted
+points Controllable, (Vague stability) Uncontrollable, Unstable Your
+pupils show you were giving maximum effort Your pupils show you are
+capable of exerting more effort Dispositional, Uncontrollable, Stable
+Dispositional, Controllable, Unstable</p>
+<p>After that feedback, participants would be able to keep trying to
+improve their score in the game. As a DV, the amount of tries the
+participant completes, or the improvement on their score can be
+objective measures of persistence.</p>
+<p>References Gillham, J. E., Shatté, A. J., Reivich, K. J., &amp;
+Seligman, M. E. (2001). Optimism, pessimism, and explanatory style. In
+Optimism &amp; pessimism: Implications for theory, research, and
+practice. P 53-75. Stangor, C., &amp; Walinga, J. (2014). Introduction
+to psychology. BC Campus, BC Open Textbook Project. Weiner, B. (1985).
+An attributional theory of achievement motivation and emotion.
+Psychological review, 92(4), 548.</p>
+</div>
+<div id="some-thoughts-on-deliberate-practice" class="section level1">
+<h1>Some thoughts on deliberate practice</h1>
+<p>2020 | 03 | 10</p>
+<p>I learned about deliberate practice some years ago already. The idea
+stuck with me early on. I think this was because I had already
+experienced it, without knowing what it was. During my last years of
+high school, my parents got my little brother a digital keyboard. Soon,
+I was spending entire afternoons on the weekends putting my fingers
+where the keyboard lit up. Since I couldn’t read notation, I added one
+note at a time, until an entire passage was memorized. This forced me to
+keep my objective hyper-specific: add a single note. The aggregation of
+those tiny objectives, however, was much more meaningful. After some
+hours of practice, I could play a simplified version of the second
+movement of Beethoven’s Pathetique sonata.</p>
+<p>Some years later, when I learned about deliberate practice, I
+understood why that was so effective. Here are some interesting insights
+I’ve gained from practicing deliberately:</p>
+<ul>
+<li>It does not get any easier. This can be very frustrating, because
+deliberate practice itself is often <em>not</em> enjoyable. Being aware
+of this is very important, because I often fool myself to avoid the
+feeling of it being hard. I might noodle around, I might practice what I
+already know, I might outright procrastinate. Knowing that practice is
+not supposed to feel fluent is helpful, since we often think that
+fluency is required for learning (Hint: It’s the opposite).</li>
+<li>Making deliberate practice into a habit helps deal with the fact
+that it is hard. Habits help because they make a behavior automatic. If
+we skip thinking “this will be effortful” we are more likely to follow
+through.</li>
+<li>Not everything is as easy as piano. There’s no wonder why Erikson
+studied practice in certain fields where deliberate practice is easy.
+Music, chess, and sports make great things to practice deliberately
+because they are concrete: they have instant feedback, predefined
+behaviors, they can easily be broken down into components. More abstract
+endeavors like becoming a good researcher require more work in terms of
+deciding how we can practice them more effectively.</li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
