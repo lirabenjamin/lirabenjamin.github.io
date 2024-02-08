@@ -1,0 +1,68 @@
+---
+title: "Benjamin Lira Luttges"
+output: html_document
+---
+
+```{=html}
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+```
+<div class="row" style="padding-top: 30px;">
+
+::: {.col-sm-6}
+# **Benjamin Lira Luttges**
+
+I am a third year graduate student in Psychology at the [University of Pennsylvania](upenn.edu). I am working with [Dr. Angela Duckworth](angeladuckworth.com).
+
+I hope to contribute to psychological science by improving our understanding of how non-cognitive skills develop and how we can better assess them, and the practices that lead to their development. I employ network science methods to better understand how non-congitive skills develop and machine learning (particularly natural language processing) to better measure them and the practices that lead to their improvement. My work has been published in *Educational Researcher*, *Nature Scientific Reports*, and *Science Advances*. THIS IS A TEST
+
+Prior to my doctoral studies at Penn, I graduated summa cum laude from the University of Lima with a BA and a licensure in Psychology, and worked developing interventions, training, and outreach on Educational Neuroscience and Psychology.
+
+<!-- <iframe src="https://calendar.google.com/calendar/embed?src=blira%40characterlab.org&ctz=America%2FNew_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
+
+Here is my [Google Scholar Page](https://scholar.google.com/citations?user=St3vJckAAAAJ&hl=en), and my [CV](https://lirabenjamin.github.io/CV.pdf).
+
+<!-- <form -->
+<!--   action="https://formspree.io/f/mdopqldn" -->
+<!--   method="POST" -->
+<!-- > -->
+<!-- <label> -->
+<!-- Your email: -->
+<!-- <input type="email" name="_replyto"> -->
+<!-- </label> -->
+<!-- <label> -->
+<!-- Your message: -->
+<!-- </br> -->
+<!-- <textarea name="message"></textarea> -->
+<!-- </label> -->
+
+  <!-- your other form fields go here
+
+<!--   <button type="submit">Send</button> -->
+<!-- </form> -->
+:::
+
+::: {.col-sm-6}
+```{r,echo=FALSE}
+knitr::include_graphics("Images/Benji.jpg")
+```
+<center>
+<p style="margin-bottom:0;">
+    PhD Student
+</p>
+<p style="margin : 0; padding-top:0;">
+    **University of Pennsylvania**
+</p>
+</center>
+
+
+
+:::
