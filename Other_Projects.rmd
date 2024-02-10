@@ -23,3 +23,7 @@ with Chayce Baldwin
 
 Custom functions for ordinal alpha, Mahalanobis outlier detection,
 discriminant validity analysis, and data simulation.
+
+### [NLP Tools for Social Science](https://lirabenjamin.github.io/bens_nlp_tools/)
+
+An easy to use set of R and Python functions for text analysis and natural language processing.

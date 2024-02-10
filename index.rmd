@@ -22,7 +22,9 @@ output: html_document
 
 I am a third year graduate student in Psychology at the [University of Pennsylvania](upenn.edu). I am working with [Dr. Angela Duckworth](angeladuckworth.com).
 
-I hope to contribute to psychological science by improving our understanding of how non-cognitive skills develop and how we can better assess them, and the practices that lead to their development. I employ network science methods to better understand how non-congitive skills develop and machine learning (particularly natural language processing) to better measure them and the practices that lead to their improvement. My work has been published in *Educational Researcher*, *Nature Scientific Reports*, and *Science Advances*. THIS IS A TEST
+I study the intersection of noncognitive skills---self-regulation----and artificial intelligence. My research has three areas of focus: (1) using AI to measure non-cognitive skills, (2) developing AI-based interventions for developing non-cognitive skills, and (3) exploring the cognitive consequences of interacting with large language models. I hope to contribute to psychological science by improving our understanding of we can leverage powerful technologies to make our lives better. 
+
+My work has been published in *Educational Researcher*, *Nature Scientific Reports*, and *Science Advances*.
 
 Prior to my doctoral studies at Penn, I graduated summa cum laude from the University of Lima with a BA and a licensure in Psychology, and worked developing interventions, training, and outreach on Educational Neuroscience and Psychology.
 

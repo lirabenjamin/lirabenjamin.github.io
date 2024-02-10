@@ -1,5 +1,11 @@
-### Feb 8, 2024
+#### Feb 8, 2024
 I'm at SPSP!
+
+#### Novemeber 3, 2023
+Lyle Ungar is presenting a talk on [C](https://docs.google.com/presentation/d/1uBJ-QEi5HdSsGPWpj4m39iUbypWwS1dt/edit#slide=id.p1) at the [Psychology of Technology Conference](https://www.psychoftech.org/2023-conference#:~:text=The%20USC%20Marshall's%20Neely%20Center,sponsored%20by%20the%20University%20of)!
+
+#### October 12, 2023
+Our paper on Using AI to Measure Personal Qualities in Admissions was published at Science Advances today. Check it out [here](https://www.science.org/doi/10.1126/sciadv.adg9405).
 
 #### March 14, 2023
 I was invited to [Counselor Bites](https://www.collegeguidancenetwork.com), to talk about the future of AI in College admissions with Brennan Barnard and Jenny Rickard, CEO of CommonApp. See the recorded conversation [here](https://www.library.collegeguidancenetwork.com/library/resources/video/ccb7e7c4-b0bf-4981-b6cb-2ec2cfb371df), and resources from the program [here](https://www.library.collegeguidancenetwork.com/library/resources/pdf/e7068264-df60-4d9b-a302-2e418cbe32b9).
