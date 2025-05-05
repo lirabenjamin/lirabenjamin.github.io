@@ -1,5 +1,5 @@
 ---
-title: "Other Projects"
+title: "Portfolio"
 output: html_document
 editor_options: 
   markdown: 
@@ -10,12 +10,48 @@ For my research, I often build web-apps and tools to collect data.
 
 ### [Maze Game Frustration Task](https://maze-game-react.vercel.app)
 
+<a href="https://maze-game-react.vercel.app" target="_blank">
+  <img src="https://image.thum.io/get/width/600/crop/https://maze-game-react.vercel.app" 
+       alt="Maze Game Frustration Task preview"
+       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
+</a>
+
 ### [Qualtrics Chatbot Integration](https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion)
+
+<a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">
+  <img src="https://image.thum.io/get/width/600/crop/https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" 
+       alt="Qualtrics Chatbot Integration preview"
+       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
+</a>
 
 ### [Email rewriting tool](https://ai-writing-busy-readers.vercel.app)
 
+<a href="https://ai-writing-busy-readers.vercel.app" target="_blank">
+  <img src="https://image.thum.io/get/width/600/crop/https://ai-writing-busy-readers.vercel.app" 
+       alt="Email rewriting tool preview"
+       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
+</a>
+
 ###  [Email rewriting tool with styles](https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app)
+
+<a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">
+  <img src="https://image.thum.io/get/width/600/crop/https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" 
+       alt="Email rewriting tool with styles preview"
+       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
+</a>
 
 ### [Pairwise Comparisons](https://pairwise-comparisons.vercel.app)
 
+<a href="https://pairwise-comparisons.vercel.app" target="_blank">
+  <img src="https://image.thum.io/get/width/600/crop/https://pairwise-comparisons.vercel.app" 
+       alt="Pairwise Comparisons preview"
+       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
+</a>
+
 ### [Full Study Flow](https://writing-study-joq4fc672-lirabenjamins-projects.vercel.app)
+
+<a href="https://writing-study-joq4fc672-lirabenjamins-projects.vercel.app" target="_blank">
+  <img src="https://image.thum.io/get/width/600/crop/https://writing-study-joq4fc672-lirabenjamins-projects.vercel.app" 
+       alt="Full Study Flow preview"
+       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
+</a>
