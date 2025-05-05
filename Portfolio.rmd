@@ -37,48 +37,45 @@ For my research, I often build web-apps and tools to collect data.
 </style>
 
 <div class="portfolio-row">
+<div class="portfolio-item">
+<h3><a href="https://maze-game-react.vercel.app" target="_blank">Maze Game Frustration Task</a></h3>
+<a href="https://maze-game-react.vercel.app" target="_blank">
+<img src="https://image.thum.io/get/width/800/crop/https://maze-game-react.vercel.app" alt="Maze Game Frustration Task preview">
+</a>
+</div>
 
+<div class="portfolio-item">
+<h3><a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">Qualtrics Chatbot Integration</a></h3>
+<a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">
+<img src="https://image.thum.io/get/width/800/crop/https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" alt="Qualtrics Chatbot Integration preview">
+</a>
+</div>
 
-  <div class="portfolio-item">
-    <h3><a href="https://maze-game-react.vercel.app" target="_blank">Maze Game Frustration Task</a></h3>
-    <a href="https://maze-game-react.vercel.app" target="_blank">
-      <img src="https://image.thum.io/get/width/800/crop/https://maze-game-react.vercel.app" alt="Maze Game Frustration Task preview">
-    </a>
-  </div>
+<div class="portfolio-item">
+<h3><a href="https://ai-writing-busy-readers.vercel.app" target="_blank">Email Rewriting Tool</a></h3>
+<a href="https://ai-writing-busy-readers.vercel.app" target="_blank">
+<img src="https://image.thum.io/get/width/800/crop/https://ai-writing-busy-readers.vercel.app" alt="Email rewriting tool preview">
+</a>
+</div>
 
-  <div class="portfolio-item">
-    <h3><a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">Qualtrics Chatbot Integration</a></h3>
-    <a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">
-      <img src="https://image.thum.io/get/width/800/crop/https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" alt="Qualtrics Chatbot Integration preview">
-    </a>
-  </div>
+<div class="portfolio-item">
+<h3><a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">Email Rewriting Tool (with Styles)</a></h3>
+<a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">
+<img src="https://image.thum.io/get/width/800/crop/https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" alt="Email rewriting tool with styles preview">
+</a>
+</div>
 
-  <div class="portfolio-item">
-    <h3><a href="https://ai-writing-busy-readers.vercel.app" target="_blank">Email Rewriting Tool</a></h3>
-    <a href="https://ai-writing-busy-readers.vercel.app" target="_blank">
-      <img src="https://image.thum.io/get/width/800/crop/https://ai-writing-busy-readers.vercel.app" alt="Email rewriting tool preview">
-    </a>
-  </div>
+<div class="portfolio-item">
+<h3><a href="https://pairwise-comparisons.vercel.app" target="_blank">Pairwise Comparisons</a></h3>
+<a href="https://pairwise-comparisons.vercel.app" target="_blank">
+<img src="https://image.thum.io/get/width/800/crop/https://pairwise-comparisons.vercel.app" alt="Pairwise Comparisons preview">
+</a>
+</div>
 
-  <div class="portfolio-item">
-    <h3><a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">Email Rewriting Tool (with Styles)</a></h3>
-    <a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">
-      <img src="https://image.thum.io/get/width/800/crop/https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" alt="Email rewriting tool with styles preview">
-    </a>
-  </div>
-
-  <div class="portfolio-item">
-    <h3><a href="https://pairwise-comparisons.vercel.app" target="_blank">Pairwise Comparisons</a></h3>
-    <a href="https://pairwise-comparisons.vercel.app" target="_blank">
-      <img src="https://image.thum.io/get/width/800/crop/https://pairwise-comparisons.vercel.app" alt="Pairwise Comparisons preview">
-    </a>
-  </div>
-
-  <div class="portfolio-item">
-    <h3><a href="https://writing-study.vercel.app" target="_blank">Full Study Flow</a></h3>
-    <a href="https://writing-study.vercel.app" target="_blank">
-      <img src="https://image.thum.io/get/width/800/crop/https://writing-study.vercel.app" alt="Full Study Flow preview">
-    </a>
-  </div>
-
+<div class="portfolio-item">
+<h3><a href="https://writing-study.vercel.app" target="_blank">Full Study Flow</a></h3>
+<a href="https://writing-study.vercel.app" target="_blank">
+<img src="https://image.thum.io/get/width/800/crop/https://writing-study.vercel.app" alt="Full Study Flow preview">
+</a>
+</div>
 </div>
