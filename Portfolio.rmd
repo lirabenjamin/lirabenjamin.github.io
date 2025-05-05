@@ -6,52 +6,79 @@ editor_options:
     wrap: 72
 ---
 
+
 For my research, I often build web-apps and tools to collect data.
 
-### [Maze Game Frustration Task](https://maze-game-react.vercel.app)
+<style>
+/* --- Simple two‑column portfolio grid --- */
+.portfolio-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -15px;
+}
+.portfolio-item {
+  width: 50%;
+  padding: 15px;
+}
+.portfolio-item img {
+  width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.portfolio-item img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.30);
+}
+.portfolio-item h3 {
+  margin-top: 0;
+  font-size: 1.25em;
+}
+</style>
 
-<a href="https://maze-game-react.vercel.app" target="_blank">
-  <img src="https://image.thum.io/get/width/600/crop/https://maze-game-react.vercel.app" 
-       alt="Maze Game Frustration Task preview"
-       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
-</a>
+<div class="portfolio-row">
 
-### [Qualtrics Chatbot Integration](https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion)
 
-<a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">
-  <img src="https://image.thum.io/get/width/600/crop/https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" 
-       alt="Qualtrics Chatbot Integration preview"
-       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
-</a>
+  <div class="portfolio-item">
+    <h3><a href="https://maze-game-react.vercel.app" target="_blank">Maze Game Frustration Task</a></h3>
+    <a href="https://maze-game-react.vercel.app" target="_blank">
+      <img src="https://image.thum.io/get/width/800/crop/https://maze-game-react.vercel.app" alt="Maze Game Frustration Task preview">
+    </a>
+  </div>
 
-### [Email rewriting tool](https://ai-writing-busy-readers.vercel.app)
+  <div class="portfolio-item">
+    <h3><a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">Qualtrics Chatbot Integration</a></h3>
+    <a href="https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" target="_blank">
+      <img src="https://image.thum.io/get/width/800/crop/https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion" alt="Qualtrics Chatbot Integration preview">
+    </a>
+  </div>
 
-<a href="https://ai-writing-busy-readers.vercel.app" target="_blank">
-  <img src="https://image.thum.io/get/width/600/crop/https://ai-writing-busy-readers.vercel.app" 
-       alt="Email rewriting tool preview"
-       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
-</a>
+  <div class="portfolio-item">
+    <h3><a href="https://ai-writing-busy-readers.vercel.app" target="_blank">Email Rewriting Tool</a></h3>
+    <a href="https://ai-writing-busy-readers.vercel.app" target="_blank">
+      <img src="https://image.thum.io/get/width/800/crop/https://ai-writing-busy-readers.vercel.app" alt="Email rewriting tool preview">
+    </a>
+  </div>
 
-###  [Email rewriting tool with styles](https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app)
+  <div class="portfolio-item">
+    <h3><a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">Email Rewriting Tool (with Styles)</a></h3>
+    <a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">
+      <img src="https://image.thum.io/get/width/800/crop/https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" alt="Email rewriting tool with styles preview">
+    </a>
+  </div>
 
-<a href="https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" target="_blank">
-  <img src="https://image.thum.io/get/width/600/crop/https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app" 
-       alt="Email rewriting tool with styles preview"
-       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
-</a>
+  <div class="portfolio-item">
+    <h3><a href="https://pairwise-comparisons.vercel.app" target="_blank">Pairwise Comparisons</a></h3>
+    <a href="https://pairwise-comparisons.vercel.app" target="_blank">
+      <img src="https://image.thum.io/get/width/800/crop/https://pairwise-comparisons.vercel.app" alt="Pairwise Comparisons preview">
+    </a>
+  </div>
 
-### [Pairwise Comparisons](https://pairwise-comparisons.vercel.app)
+  <div class="portfolio-item">
+    <h3><a href="https://writing-study.vercel.app" target="_blank">Full Study Flow</a></h3>
+    <a href="https://writing-study.vercel.app" target="_blank">
+      <img src="https://image.thum.io/get/width/800/crop/https://writing-study.vercel.app" alt="Full Study Flow preview">
+    </a>
+  </div>
 
-<a href="https://pairwise-comparisons.vercel.app" target="_blank">
-  <img src="https://image.thum.io/get/width/600/crop/https://pairwise-comparisons.vercel.app" 
-       alt="Pairwise Comparisons preview"
-       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
-</a>
-
-### [Full Study Flow](https://writing-study-joq4fc672-lirabenjamins-projects.vercel.app)
-
-<a href="https://writing-study-joq4fc672-lirabenjamins-projects.vercel.app" target="_blank">
-  <img src="https://image.thum.io/get/width/600/crop/https://writing-study-joq4fc672-lirabenjamins-projects.vercel.app" 
-       alt="Full Study Flow preview"
-       style="max-width:100%; border:1px solid #ddd; border-radius:4px; margin-bottom:24px;">
-</a>
+</div>
