@@ -1,0 +1,21 @@
+---
+title: "Other Projects"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+For my research, I often build web-apps and tools to collect data.
+
+### [Maze Game Frustration Task](https://maze-game-react.vercel.app)
+
+### [Qualtrics Chatbot Integration](https://reframe001-7a186c892e5e.herokuapp.com/?condition=emotion)
+
+### [Email rewriting tool](https://ai-writing-busy-readers.vercel.app)
+
+###  [Email rewriting tool with styles](https://todd-app-styles-nkwb6z4v8-lirabenjamins-projects.vercel.app)
+
+### [Pairwise Comparisons](https://pairwise-comparisons.vercel.app)
+
+### [Full Study Flow](https://writing-study-joq4fc672-lirabenjamins-projects.vercel.app)

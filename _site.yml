@@ -12,6 +12,8 @@ navbar:
     #   href: Blog.html
     - text: "Other Projects"
       href: Other_Projects.html
+    - text: "Portfolio"
+      href: Portfolio.html
     - text: "News"
       href: News.html
       
