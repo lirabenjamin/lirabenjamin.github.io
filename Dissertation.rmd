@@ -1,0 +1,95 @@
+---
+title: "Dissertation Summary"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+### Empirical Evidence That Using AI Tools Can Enhance Human Cognition
+🧠 **Winner of the 2025 Psychology of Technology Dissertation Award**
+
+Does AI make us smarter or stupider?
+
+Most people assume tools like ChatGPT boost short-term productivity but make us “cognitively lazy.” I challenge that view by identifying **two mechanisms** through which AI can support human cognition:
+
+- Improving **Engagement** (e.g., more engagement when interacting with AI tools)
+- Better **Information** (e.g., AI provides higher-quality information)
+
+Below are three empirical chapters demonstrating how AI can enhance **learning**, **motivation**, and **decision-making**.
+
+#### 📝 Chapter 1 - *AI as teacher*  
+[*(Under review at Science Advances)*](https://arxiv.org/pdf/2502.02880.pdf)
+
+Participants learned more when practicing writing cover letters with AI (vs. without it), even though they exerted **less effort**.
+
+- Participants who practiced cover letter writing *with AI* improved more than those without it.
+- AI examples boosted test performance **immediately and one day later**.
+- Even *passive exposure* to examples led to learning.
+
+
+#### 📚 Chapter 2 – *AI as coach*  
+*(In prep for Journal of Consumer Research)*  
+I built two **AI chatbots** to motivate students on Khan Academy via:
+
+- **Situation modification**
+- **Emotional reframing**
+
+Results from a year-long field study:
+After deploying them during a year-long field study, we find that students:
+
+- Work for 10 - 11% longer
+- Accumulate practice on more problems
+- Attempt more challenging problems  
+
+#### 🎓 Chapter 3 – *AI decision aid*  
+[Published in *Science Advances* (Lira et al., 2023)](https://www.science.org/doi/10.1126/sciadv.adg7995)  
+
+Can AI be used to evaluate personal qualities, without introducing demographic biases?
+
+In a study using a full cohort of college applicants using the Common Application:
+
+- Fine-tuned models reproduced human judgments on personal qualities like leardership and prosocial purpose.
+- Models showed no evidence of demographic biases.
+- AI scores predicted **6-year college graduation** and showed potential for interpretable, fair decision support
+
+#### 💡 Takeaway  
+AI doesn’t inevitably make us dumber. When designed carefully, it can:
+
+- **Boost learning**
+- **Increase motivation**
+- **Improve human decisions**
+
+Want to learn more? [Email me](mailto:lira.benjamin@gmail.com) or [check out my CV](https://lirabenjamin.github.io/CV.pdf).
+
+
+## Full Abstract
+
+<button id="toggleButton" onclick="toggleAbstract()">Show Full Abstract</button>
+
+<div id="fullAbstract" style="display:none; margin-top: 1em;">
+Empirical Evidence That Using AI Tools Can Enhance Human Cognition
+Does AI make us smarter or stupider? Most people assume that relying on ChatGPT and similar AI tools for tasks like writing and coding boosts short-term productivity but ultimately renders the user “cognitively lazy” (More In Common, 2024). Many worry that AI hallucinations and biases plant false information in users' minds, potentially leading to lasting misconceptions. I identify conditions under which AI tools can make us smarter. I propose two theoretically distinct mechanisms through which AI influences human cognition–engagement and information–and provide three “existence proof” illustrations of AI tools improving information (Chapters 1 and 3) and motivation (Chapter 2). 
+
+In Chapter 1 (under review at Science Advances), I show that superior information—in the form of just-in-time, personalized examples—can compensate for decreased engagement, yielding net positive effects on skill development. I conducted a series of highly-powered, pre-registered experiments in the domain of professional writing, the modal use of AI in the workplace (Bick, 2024). Participants randomly assigned to practice writing cover letters with assistance from an AI tool improved more on a writing test, both immediately after practice and again one day later, compared to writers assigned to practice without AI. Notably, writers given access to the AI tool improved more despite exerting less effort, whether measured by time on task, keystrokes, or subjective ratings. In a second pre-registered experiment, I replicated and extended these findings, showing that participants learned more because of exposure to AI-generated examples—participants who merely saw AI generated examples they could not edit still learned more than those practicing without AI.
+
+In Chapter 2 (in preparation for submission to Journal of Consumer Research), I show that an AI chatbot can increase motivation among users of the online learning platform Khan Academy. For this year-long quasi-experimental field investigation, I built two AI-based chatbots that delivered situation modification and emotional reframing interventions. Using 2-way fixed effects panel models, which control for all time-invariant individual differences, I found that compared to the prior week, students increased their time on task by 10% and 11% (ds = 0.30 and 0.37, ps < .001) for situation modification and emotional reframing interventions, respectively. Likewise, students worked on more challenging problems after completing the interventions (ds = 0.25 and 0.22, ps < .001). However, increased motivation from AI interventions predicted improved performance only among students with higher baseline skills, suggesting motivation alone may be insufficient without pre-existing foundational knowledge. 
+
+Finally, in Chapter 3 (Lira et al., 2023 in Science Advances), I demonstrate the potential for AI to enhance human decision making in the high-stakes setting of college admissions. Specifically, I fine-tuned a language model to assess personal qualities like leadership and prosocial purpose. Admissions officers identified the presence/absence of seven personal qualities in a set of 3,131 applicant essays describing high school extracurricular and work experiences. Next, these admissions officers’ ratings were used to fine-tune language models, which successfully and consistently reproduced human codes across demographic subgroups. Last, in a national sample (N = 309,594) of college applicants, computer-generated scores demonstrated incremental predictive validity for 6-year college graduation. Against concerns that AI tools are “black boxes” whose biases cannot be identified, this study shows that careful training can result in AI systems that do not increase bias and can be rendered interpretable through explainable AI techniques.
+
+As machines get smarter and smarter, and we come to depend on them more and more, what will become of our own mental faculties? In this dissertation, I show the potential for AI tools to improve motivation and/or information, and in so doing, making us better writers, more motivated learners, and wiser decision makers.
+</div>
+
+<script>
+function toggleAbstract() {
+  var x = document.getElementById("fullAbstract");
+  var btn = document.getElementById("toggleButton");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    btn.innerText = "Hide Full Abstract";
+  } else {
+    x.style.display = "none";
+    btn.innerText = "Show Full Abstract";
+  }
+}
+</script>

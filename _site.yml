@@ -10,6 +10,8 @@ navbar:
       href: Publications.html
     # - text: "Blog"
     #   href: Blog.html
+    - text: "Dissertation"
+      href: Dissertation.html
     - text: "Other Projects"
       href: Other_Projects.html
     - text: "Portfolio"

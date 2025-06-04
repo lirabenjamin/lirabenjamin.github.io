@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Dissertation Summary</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Benjamin Lira Luttges</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="https://lirabenjamin.github.io/CV.pdf">CV</a>
+</li>
+<li>
+  <a href="Publications.html">Publications</a>
+</li>
+<li>
+  <a href="Dissertation.html">Dissertation</a>
+</li>
+<li>
+  <a href="Other_Projects.html">Other Projects</a>
+</li>
+<li>
+  <a href="Portfolio.html">Portfolio</a>
+</li>
+<li>
+  <a href="News.html">News</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Dissertation Summary</h1>
+
+</div>
+
+
+<div
+id="empirical-evidence-that-using-ai-tools-can-enhance-human-cognition"
+class="section level3">
+<h3>Empirical Evidence That Using AI Tools Can Enhance Human
+Cognition</h3>
+<p>🧠 <strong>Winner of the 2025 Psychology of Technology Dissertation
+Award</strong></p>
+<p>Does AI make us smarter or stupider?</p>
+<p>Most people assume tools like ChatGPT boost short-term productivity
+but make us “cognitively lazy.” I challenge that view by identifying
+<strong>two mechanisms</strong> through which AI can support human
+cognition:</p>
+<ul>
+<li>Improving <strong>Engagement</strong> (e.g., more engagement when
+interacting with AI tools)</li>
+<li>Better <strong>Information</strong> (e.g., AI provides
+higher-quality information)</li>
+</ul>
+<p>Below are three empirical chapters demonstrating how AI can enhance
+<strong>learning</strong>, <strong>motivation</strong>, and
+<strong>decision-making</strong>.</p>
+<div id="chapter-1---ai-as-teacher" class="section level4">
+<h4>📝 Chapter 1 - <em>AI as teacher</em></h4>
+<p><a href="https://arxiv.org/pdf/2502.02880.pdf"><em>(Under review at
+Science Advances)</em></a></p>
+<p>Participants learned more when practicing writing cover letters with
+AI (vs. without it), even though they exerted <strong>less
+effort</strong>.</p>
+<ul>
+<li>Participants who practiced cover letter writing <em>with AI</em>
+improved more than those without it.</li>
+<li>AI examples boosted test performance <strong>immediately and one day
+later</strong>.</li>
+<li>Even <em>passive exposure</em> to examples led to learning.</li>
+</ul>
+</div>
+<div id="chapter-2-ai-as-coach" class="section level4">
+<h4>📚 Chapter 2 – <em>AI as coach</em></h4>
+<p><em>(In prep for Journal of Consumer Research)</em><br />
+I built two <strong>AI chatbots</strong> to motivate students on Khan
+Academy via:</p>
+<ul>
+<li><strong>Situation modification</strong></li>
+<li><strong>Emotional reframing</strong></li>
+</ul>
+<p>Results from a year-long field study: After deploying them during a
+year-long field study, we find that students:</p>
+<ul>
+<li>Work for 10 - 11% longer</li>
+<li>Accumulate practice on more problems</li>
+<li>Attempt more challenging problems</li>
+</ul>
+</div>
+<div id="chapter-3-ai-decision-aid" class="section level4">
+<h4>🎓 Chapter 3 – <em>AI decision aid</em></h4>
+<p><a
+href="https://www.science.org/doi/10.1126/sciadv.adg7995">Published in
+<em>Science Advances</em> (Lira et al., 2023)</a></p>
+<p>Can AI be used to evaluate personal qualities, without introducing
+demographic biases?</p>
+<p>In a study using a full cohort of college applicants using the Common
+Application:</p>
+<ul>
+<li>Fine-tuned models reproduced human judgments on personal qualities
+like leardership and prosocial purpose.</li>
+<li>Models showed no evidence of demographic biases.</li>
+<li>AI scores predicted <strong>6-year college graduation</strong> and
+showed potential for interpretable, fair decision support</li>
+</ul>
+</div>
+<div id="takeaway" class="section level4">
+<h4>💡 Takeaway</h4>
+<p>AI doesn’t inevitably make us dumber. When designed carefully, it
+can:</p>
+<ul>
+<li><strong>Boost learning</strong></li>
+<li><strong>Increase motivation</strong></li>
+<li><strong>Improve human decisions</strong></li>
+</ul>
+<p>Want to learn more? <a href="mailto:lira.benjamin@gmail.com">Email
+me</a> or <a href="https://lirabenjamin.github.io/CV.pdf">check out my
+CV</a>.</p>
+</div>
+</div>
+<div id="full-abstract" class="section level2">
+<h2>Full Abstract</h2>
+<button id="toggleButton" onclick="toggleAbstract()">
+Show Full Abstract
+</button>
+<div id="fullAbstract" style="display:none; margin-top: 1em;">
+<p>Empirical Evidence That Using AI Tools Can Enhance Human Cognition
+Does AI make us smarter or stupider? Most people assume that relying on
+ChatGPT and similar AI tools for tasks like writing and coding boosts
+short-term productivity but ultimately renders the user “cognitively
+lazy” (More In Common, 2024). Many worry that AI hallucinations and
+biases plant false information in users’ minds, potentially leading to
+lasting misconceptions. I identify conditions under which AI tools can
+make us smarter. I propose two theoretically distinct mechanisms through
+which AI influences human cognition–engagement and information–and
+provide three “existence proof” illustrations of AI tools improving
+information (Chapters 1 and 3) and motivation (Chapter 2).</p>
+<p>In Chapter 1 (under review at Science Advances), I show that superior
+information—in the form of just-in-time, personalized examples—can
+compensate for decreased engagement, yielding net positive effects on
+skill development. I conducted a series of highly-powered,
+pre-registered experiments in the domain of professional writing, the
+modal use of AI in the workplace (Bick, 2024). Participants randomly
+assigned to practice writing cover letters with assistance from an AI
+tool improved more on a writing test, both immediately after practice
+and again one day later, compared to writers assigned to practice
+without AI. Notably, writers given access to the AI tool improved more
+despite exerting less effort, whether measured by time on task,
+keystrokes, or subjective ratings. In a second pre-registered
+experiment, I replicated and extended these findings, showing that
+participants learned more because of exposure to AI-generated
+examples—participants who merely saw AI generated examples they could
+not edit still learned more than those practicing without AI.</p>
+<p>In Chapter 2 (in preparation for submission to Journal of Consumer
+Research), I show that an AI chatbot can increase motivation among users
+of the online learning platform Khan Academy. For this year-long
+quasi-experimental field investigation, I built two AI-based chatbots
+that delivered situation modification and emotional reframing
+interventions. Using 2-way fixed effects panel models, which control for
+all time-invariant individual differences, I found that compared to the
+prior week, students increased their time on task by 10% and 11% (ds =
+0.30 and 0.37, ps &lt; .001) for situation modification and emotional
+reframing interventions, respectively. Likewise, students worked on more
+challenging problems after completing the interventions (ds = 0.25 and
+0.22, ps &lt; .001). However, increased motivation from AI interventions
+predicted improved performance only among students with higher baseline
+skills, suggesting motivation alone may be insufficient without
+pre-existing foundational knowledge.</p>
+<p>Finally, in Chapter 3 (Lira et al., 2023 in Science Advances), I
+demonstrate the potential for AI to enhance human decision making in the
+high-stakes setting of college admissions. Specifically, I fine-tuned a
+language model to assess personal qualities like leadership and
+prosocial purpose. Admissions officers identified the presence/absence
+of seven personal qualities in a set of 3,131 applicant essays
+describing high school extracurricular and work experiences. Next, these
+admissions officers’ ratings were used to fine-tune language models,
+which successfully and consistently reproduced human codes across
+demographic subgroups. Last, in a national sample (N = 309,594) of
+college applicants, computer-generated scores demonstrated incremental
+predictive validity for 6-year college graduation. Against concerns that
+AI tools are “black boxes” whose biases cannot be identified, this study
+shows that careful training can result in AI systems that do not
+increase bias and can be rendered interpretable through explainable AI
+techniques.</p>
+<p>As machines get smarter and smarter, and we come to depend on them
+more and more, what will become of our own mental faculties? In this
+dissertation, I show the potential for AI tools to improve motivation
+and/or information, and in so doing, making us better writers, more
+motivated learners, and wiser decision makers.</p>
+</div>
+<script>
+function toggleAbstract() {
+  var x = document.getElementById("fullAbstract");
+  var btn = document.getElementById("toggleButton");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    btn.innerText = "Hide Full Abstract";
+  } else {
+    x.style.display = "none";
+    btn.innerText = "Show Full Abstract";
+  }
+}
+</script>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
