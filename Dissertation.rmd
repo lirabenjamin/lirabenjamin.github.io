@@ -43,7 +43,7 @@ After deploying them during a year-long field study, we find that students:
 - Attempt more challenging problems  
 
 #### 🎓 Chapter 3 – *AI decision aid*  
-[Published in *Science Advances* (Lira et al., 2023)](https://www.science.org/doi/10.1126/sciadv.adg7995)  
+[Published in *Science Advances* (Lira et al., 2023)](https://www.science.org/doi/10.1126/sciadv.adg9405)  
 
 Can AI be used to evaluate personal qualities, without introducing demographic biases?
 
