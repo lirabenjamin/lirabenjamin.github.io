@@ -1,6 +1,15 @@
+#### October 2, 2025
+I'm officially starting my postdoc at Wharton, working with an amazing interdisciplinary team: Stefano Puntoni (Marketing), Angela Duckworth (Psychology, OID), Lyle Ungar (Computer Science).
+
+#### September 25, 2025
+I posted an updated preprint for my job market paper on [ArXiv](https://arxiv.org/pdf/2502.02880).
+
+#### August 29, 2025
+Successfully defended my dissertation. See recording [here], [slides], and [PDF].
+
 #### May 19, 2025
 I started an internship at Microsoft Research! 
-I'm working with (Dan Goldstein)[https://www.dangoldstein.com] in the Computational Social Science group. 
+I'm working with [Dan Goldstein](https://www.dangoldstein.com) in the Computational Social Science group. 
 We're working, along with (Jaeyoon Song)[jaeyoon.io], on AI and human forecasting.
 
 #### May 5, 2025
