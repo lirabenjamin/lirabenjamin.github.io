@@ -6,7 +6,7 @@ editor_options:
     wrap: 72
 ---
 
-### Empirical Evidence That Using AI Tools Can Enhance Human Cognition
+### [Empirical Evidence That Using AI Tools Can Enhance Human Cognition](https://lirabenjamin.github.io/dissertation.pdf)
 🧠 **Winner of the 2025 Psychology of Technology Dissertation Award**
 
 Does AI make us smarter or stupider?
