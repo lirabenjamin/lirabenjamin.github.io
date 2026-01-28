@@ -6,10 +6,10 @@ editor_options:
     wrap: 72
 ---
 
-My current number of citations is 566, and my h-index is 8  .
+My current number of citations is 643, and my h-index is 9.
 
 ### Job Market Paper
-Invited resubmission to *Science Advances*.
+Under review at *Nature Communications*.
 
 Lira, B., Goldstein, D., Rogers, T., Ungar, L., & Duckworth, A. L. *Coach not Crutch: AI assistance can enhance rather than hinder skill development.* [[ArXiv]](https://arxiv.org/pdf/2502.02880)
 

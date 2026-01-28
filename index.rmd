@@ -27,7 +27,7 @@ mentary performance. I build state-of-the-art AI systems and then leverage psych
 the causal mechanisms that underlie why AI tools sometimes enhance and sometimes erode capabilities. I rely on
 practitioners and partner with organizations to evaluate them in the real world.
 
-My work has been published in *Science Advances* and *Nature Scientific Reports*.
+My work has been published in *Science Advances*, *Nature Scientific Reports*, and *Harvard Business Review*.
 
 I recently defended my dissertation in Psychology at the University of Pennsylvania.
 
