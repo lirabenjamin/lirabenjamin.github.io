@@ -20,7 +20,9 @@ output: html_document
 ::: {.col-sm-6}
 # **Benjamin Lira Luttges**
 
-I am a Postdoctoral Scholar at the [University of Pennsylvania](upenn.edu)'s Wharton School. I am working with [Dr. Angela Duckworth](angeladuckworth.com), [Dr. Lyle Ungar](https://www.cis.upenn.edu/~ungar/) and [Dr. Stefano Puntoni](https://marketing.wharton.upenn.edu/profile/puntoni/).
+**I study when AI builds human capability—and when it undermines it.**
+
+I am a Postdoctoral Scholar at the [University of Pennsylvania](upenn.edu)'s Wharton School and a Penn AI fellow. I work with [Dr. Angela Duckworth](angeladuckworth.com), [Dr. Lyle Ungar](https://www.cis.upenn.edu/~ungar/) and [Dr. Stefano Puntoni](https://marketing.wharton.upenn.edu/profile/puntoni/). 
 
 My research examines how human–AI systems can enhance long-term human capabilities, rather than just mo
 mentary performance. I build state-of-the-art AI systems and then leverage psychological theory to understand
@@ -29,7 +31,7 @@ practitioners and partner with organizations to evaluate them in the real world.
 
 My work has been published in *Science Advances*, *Nature Scientific Reports*, and *Harvard Business Review*.
 
-I recently defended my dissertation in Psychology at the University of Pennsylvania.
+I earned my PhD in Psychology from the University of Pennsylvania. My dissertation was recognized with the Psychology of Technology Award.
 
 Prior to my doctoral studies at Penn, I graduated summa cum laude from the University of Lima with a BA and a licensure in Psychology, and worked developing interventions, training, and outreach on Educational Neuroscience and Psychology.
 
@@ -63,7 +65,7 @@ knitr::include_graphics("Images/Benji.jpg")
 ```
 <center>
 <p style="margin-bottom:0;">
-    PhD Student
+    Postdoctoral Scholar
 </p>
 <p style="margin : 0; padding-top:0;">
     **University of Pennsylvania**
