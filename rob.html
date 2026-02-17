@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Robustness Checks: Comparing Estimation Strategies</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="rob_files/libs/clipboard/clipboard.min.js"></script>
+<script src="rob_files/libs/quarto-html/quarto.js"></script>
+<script src="rob_files/libs/quarto-html/popper.min.js"></script>
+<script src="rob_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="rob_files/libs/quarto-html/anchor.min.js"></script>
+<link href="rob_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="rob_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="rob_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="rob_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="rob_files/libs/bootstrap/bootstrap-10daa034703793678e481cc8cee6d76f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="rob_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="rob_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#bottom-line" id="toc-bottom-line" class="nav-link active" data-scroll-target="#bottom-line"><span class="header-section-number">1</span> Bottom Line</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview"><span class="header-section-number">2</span> Overview</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">3</span> Data</a></li>
+  <li><a href="#sec-twfe" id="toc-sec-twfe" class="nav-link" data-scroll-target="#sec-twfe"><span class="header-section-number">4</span> Strategy 1: TWFE Event Study (Main Specification)</a></li>
+  <li><a href="#sec-sdid" id="toc-sec-sdid" class="nav-link" data-scroll-target="#sec-sdid"><span class="header-section-number">5</span> Strategy 2: Synthetic Difference-in-Differences</a></li>
+  <li><a href="#sec-ipw" id="toc-sec-ipw" class="nav-link" data-scroll-target="#sec-ipw"><span class="header-section-number">6</span> Strategy 3: IPW-Weighted Event Study</a></li>
+  <li><a href="#sec-drdid" id="toc-sec-drdid" class="nav-link" data-scroll-target="#sec-drdid"><span class="header-section-number">7</span> Strategy 4: Doubly Robust DiD (Period-by-Period)</a></li>
+  <li><a href="#sec-honestdid" id="toc-sec-honestdid" class="nav-link" data-scroll-target="#sec-honestdid"><span class="header-section-number">8</span> Pre-Trend Sensitivity: HonestDiD</a>
+  <ul class="collapse">
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem"><span class="header-section-number">8.1</span> The problem</a></li>
+  <li><a href="#what-honestdid-does" id="toc-what-honestdid-does" class="nav-link" data-scroll-target="#what-honestdid-does"><span class="header-section-number">8.2</span> What HonestDiD does</a></li>
+  <li><a href="#how-to-read-the-results" id="toc-how-to-read-the-results" class="nav-link" data-scroll-target="#how-to-read-the-results"><span class="header-section-number">8.3</span> How to read the results</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">8.4</span> Results</a></li>
+  </ul></li>
+  <li><a href="#sec-summary" id="toc-sec-summary" class="nav-link" data-scroll-target="#sec-summary"><span class="header-section-number">9</span> Summary</a>
+  <ul class="collapse">
+  <li><a href="#all-methods-overlaid" id="toc-all-methods-overlaid" class="nav-link" data-scroll-target="#all-methods-overlaid"><span class="header-section-number">9.1</span> All methods overlaid</a></li>
+  <li><a href="#period-by-period-comparison-table" id="toc-period-by-period-comparison-table" class="nav-link" data-scroll-target="#period-by-period-comparison-table"><span class="header-section-number">9.2</span> Period-by-period comparison table</a></li>
+  <li><a href="#treatment-window-averages" id="toc-treatment-window-averages" class="nav-link" data-scroll-target="#treatment-window-averages"><span class="header-section-number">9.3</span> Treatment-window averages</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">9.4</span> Key takeaways</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Robustness Checks: Comparing Estimation Strategies</h1>
+<p class="subtitle lead">Remote Learning and Student GPA</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>,<span class="st">"tidyr"</span>,<span class="st">"fixest"</span>,<span class="st">"DRDID"</span>,<span class="st">"HonestDiD"</span>,<span class="st">"ggplot2"</span>,<span class="st">"broom"</span>,<span class="st">"knitr"</span>,<span class="st">"kableExtra"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> pkgs[<span class="sc">!</span>(pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">"Package"</span>])]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new_pkgs)) <span class="fu">install.packages</span>(new_pkgs)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fixest)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DRDID)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(HonestDiD)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                  <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Shared color palette</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"TWFE"</span>      <span class="ot">=</span> <span class="st">"#2166AC"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>         <span class="st">"SDiD"</span>      <span class="ot">=</span> <span class="st">"#B2182B"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>         <span class="st">"IPW-TWFE"</span>  <span class="ot">=</span> <span class="st">"#1B7837"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>         <span class="st">"DR-DiD"</span>    <span class="ot">=</span> <span class="st">"#E66101"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="bottom-line" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Bottom Line</h1>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>We tested whether the negative effect of remote learning on student GPA holds up across four different statistical approaches. Here is what we found:</p>
+<ul>
+<li><p><strong>Remote learning hurt GPA, especially later in the year.</strong> Every method we tried shows the same pattern: remote students’ grades declined over the course of the remote-learning period, with the sharpest drop in the final quarter (period 8). The harm was not immediate—grades held steady or even improved in the first quarter of remote learning—but accumulated over time.</p></li>
+<li><p><strong>The results are not driven by which students chose remote learning.</strong> When we statistically adjusted for the fact that remote and in-person students differed at baseline (in demographics, prior grades, and grade trajectories), the estimates barely changed. This suggests the effect is not just about <em>who</em> went remote, but about <em>being</em> remote.</p></li>
+<li><p><strong>There is a real caveat: remote students were already on a different trajectory before the pandemic.</strong> Remote students’ grades were improving faster than in-person students’ grades in the quarters leading up to remote learning. This pre-existing trend complicates the causal story. A formal sensitivity analysis shows that the negative effect in periods 7–8 is moderately robust—but not bulletproof—to this concern.</p></li>
+<li><p><strong>After returning to in-person instruction, the gap partially closed.</strong> Post-return estimates (periods 9–12) are smaller than the peak negative effects, suggesting partial recovery, though some deficit persists.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="overview" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Overview</h1>
+<p>This document compares treatment-effect estimates from four identification strategies to assess the robustness of our findings on remote learning’s effect on student GPA.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 41%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Strategy</th>
+<th style="text-align: left;">What it does</th>
+<th style="text-align: left;">Baseline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>TWFE Event Study</strong></td>
+<td style="text-align: left;">Student + period FEs (main spec)</td>
+<td style="text-align: left;">Period 4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Synthetic DiD</strong></td>
+<td style="text-align: left;">Data-driven reweighting of units and time (Arkhangelsky et al., 2021)</td>
+<td style="text-align: left;">Synthetic counterfactual</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>IPW-Weighted TWFE</strong></td>
+<td style="text-align: left;">Reweights by P(remote) to adjust for selection</td>
+<td style="text-align: left;">Period 4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Doubly Robust DiD</strong></td>
+<td style="text-align: left;">IPW + outcome regression (Sant’Anna &amp; Zhao, 2020)</td>
+<td style="text-align: left;">Pre-treatment mean (periods 1–3)</td>
+</tr>
+</tbody>
+</table>
+<p>We also conduct a <strong>pre-trend sensitivity analysis</strong> using HonestDiD (Rambachan &amp; Roth, 2023).</p>
+<p><strong>A note on baselines.</strong> These estimators do <em>not</em> share a common reference point. TWFE and IPW-TWFE coefficients are relative to period 4 (so pre-period coefficients capture trends <em>leading up to</em> treatment). SDiD constructs its own counterfactual per period. DR-DiD uses the pre-treatment average (periods 1–3) as the baseline. This means the <em>levels</em> of the estimates are not directly comparable across methods—but the <strong>pattern over time</strong> (shape, sign changes, timing of effects) is.</p>
+<p><strong>Timeline:</strong></p>
+<ul>
+<li>Periods 1–3: Pre-pandemic quarters</li>
+<li>Period 4: Last pre-treatment quarter (TWFE reference period)</li>
+<li>Periods 5–8: Treatment window (remote learning available)</li>
+<li>Periods 9–12: Post-return (all students in-person)</li>
+</ul>
+</section>
+<section id="data" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Data</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../input/clean_data.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>required <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"student_id"</span>,<span class="st">"remote_spring2021"</span>,<span class="st">"period"</span>,<span class="st">"gpa"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"bl_school_id"</span>,<span class="st">"bl_grade"</span>,<span class="st">"bl_female"</span>,<span class="st">"bl_frpl"</span>,<span class="st">"bl_sped"</span>,<span class="st">"bl_ell"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">"bl_race_cat"</span>,<span class="st">"bl_home_language"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>missing <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(required, <span class="fu">colnames</span>(d))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(missing)) <span class="fu">stop</span>(<span class="st">"Missing columns: "</span>, <span class="fu">paste</span>(missing, <span class="at">collapse=</span><span class="st">", "</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">student_id =</span> <span class="fu">as.character</span>(student_id),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">ever_remote =</span> <span class="fu">as.integer</span>(remote_spring2021),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">period =</span> <span class="fu">as.integer</span>(period),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">gpa =</span> <span class="fu">as.numeric</span>(gpa),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_school_id =</span> <span class="fu">as.factor</span>(bl_school_id),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_grade =</span> <span class="fu">as.factor</span>(bl_grade),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_female =</span> <span class="fu">as.integer</span>(bl_female),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_frpl =</span> <span class="fu">as.integer</span>(bl_frpl),</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_sped =</span> <span class="fu">as.integer</span>(bl_sped),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_ell =</span> <span class="fu">as.integer</span>(bl_ell),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_race_cat =</span> <span class="fu">as.factor</span>(bl_race_cat),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">bl_home_language =</span> <span class="fu">as.factor</span>(bl_home_language)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(student_id), <span class="sc">!</span><span class="fu">is.na</span>(period), <span class="sc">!</span><span class="fu">is.na</span>(gpa), <span class="sc">!</span><span class="fu">is.na</span>(ever_remote))</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>n_students <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(df<span class="sc">$</span>student_id)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>n_treated  <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ever_remote <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(student_id) <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>PRE_PERIODS   <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>REF_PERIOD    <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>TREAT_WINDOW  <span class="ot">&lt;-</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">8</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>POST_PERIODS  <span class="ot">&lt;-</span> <span class="dv">9</span><span class="sc">:</span><span class="dv">12</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The analysis sample contains <strong>9,912</strong> students across 12 quarters, of whom <strong>4,439</strong> (44.8%) were remote learners.</p>
+</section>
+<section id="sec-twfe" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Strategy 1: TWFE Event Study (Main Specification)</h1>
+<p><span class="math display">\[\text{GPA}_{it} = \alpha_i + \gamma_t + \sum_{k \neq 4} \beta_k \cdot \mathbf{1}[\text{period}=k] \times \text{EverRemote}_i + \varepsilon_{it}\]</span></p>
+<p>Each <span class="math inline">\(\beta_k\)</span> is the GPA gap between remote and in-person students in period <span class="math inline">\(k\)</span>, relative to period 4. Standard errors are clustered at the student level.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>m_twfe <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  gpa <span class="sc">~</span> <span class="fu">i</span>(period, ever_remote, <span class="at">ref =</span> REF_PERIOD) <span class="sc">|</span> student_id <span class="sc">+</span> period,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="sc">~</span> student_id</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>twfe_coefs <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(m_twfe, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">as.integer</span>(<span class="fu">gsub</span>(<span class="st">".*::(</span><span class="sc">\\</span><span class="st">d+):.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, term))) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(period, estimate, std.error, conf.low, conf.high, p.value)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>twfe_coefs <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(., <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Period"</span>,<span class="st">"Estimate"</span>,<span class="st">"SE"</span>,<span class="st">"CI Low"</span>,<span class="st">"CI High"</span>,<span class="st">"p"</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"TWFE event-study coefficients (ref = period 4)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>,<span class="st">"condensed"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>TWFE event-study coefficients (ref = period 4)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Period</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI Low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI High</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1.851</td>
+<td style="text-align: right;">0.152</td>
+<td style="text-align: right;">-2.148</td>
+<td style="text-align: right;">-1.554</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-1.581</td>
+<td style="text-align: right;">0.149</td>
+<td style="text-align: right;">-1.873</td>
+<td style="text-align: right;">-1.289</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-1.184</td>
+<td style="text-align: right;">0.144</td>
+<td style="text-align: right;">-1.466</td>
+<td style="text-align: right;">-0.902</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.903</td>
+<td style="text-align: right;">0.164</td>
+<td style="text-align: right;">0.581</td>
+<td style="text-align: right;">1.225</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.174</td>
+<td style="text-align: right;">-0.268</td>
+<td style="text-align: right;">0.413</td>
+<td style="text-align: right;">0.677</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-1.903</td>
+<td style="text-align: right;">0.173</td>
+<td style="text-align: right;">-2.241</td>
+<td style="text-align: right;">-1.564</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-2.796</td>
+<td style="text-align: right;">0.183</td>
+<td style="text-align: right;">-3.154</td>
+<td style="text-align: right;">-2.439</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.581</td>
+<td style="text-align: right;">0.177</td>
+<td style="text-align: right;">-0.928</td>
+<td style="text-align: right;">-0.235</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">-0.201</td>
+<td style="text-align: right;">0.180</td>
+<td style="text-align: right;">-0.554</td>
+<td style="text-align: right;">0.152</td>
+<td style="text-align: right;">0.265</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">-0.264</td>
+<td style="text-align: right;">0.186</td>
+<td style="text-align: right;">-0.627</td>
+<td style="text-align: right;">0.100</td>
+<td style="text-align: right;">0.156</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">-0.241</td>
+<td style="text-align: right;">0.191</td>
+<td style="text-align: right;">-0.616</td>
+<td style="text-align: right;">0.134</td>
+<td style="text-align: right;">0.207</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(twfe_coefs, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fl">4.5</span>, <span class="fl">8.5</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">fill =</span> pal[<span class="st">"TWFE"</span>]) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> pal[<span class="st">"TWFE"</span>], <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> pal[<span class="st">"TWFE"</span>], <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="fl">4.5</span>, <span class="at">xmax =</span> <span class="fl">8.5</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">fill =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Period"</span>, <span class="at">y =</span> <span class="st">"Effect on GPA (relative to period 4)"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-twfe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-twfe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="rob_files/figure-html/fig-twfe-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-twfe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: TWFE event study. All coefficients are relative to period 4.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Reading the TWFE results.</strong> The pre-period coefficients (<span class="math inline">\(\beta_1\)</span> through <span class="math inline">\(\beta_3\)</span>) are large and negative, meaning remote students were performing <em>worse</em> in periods 1–3 compared to period 4. Put differently, both groups were improving over time, but remote students were improving faster, converging toward in-person students by period 4. This is a notable pre-trend: remote students were on an upward trajectory relative to in-person students before treatment began.</p>
+<p>During the treatment window, <span class="math inline">\(\beta_5\)</span> is positive (remote students still above their period-4 level), but the effect declines steeply: <span class="math inline">\(\beta_7\)</span> and <span class="math inline">\(\beta_8\)</span> are large and negative, indicating that remote learning reversed the pre-treatment gains. Post-return (periods 9–12), the gap narrows but remains negative relative to period 4.</p>
+</section>
+<section id="sec-sdid" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Strategy 2: Synthetic Difference-in-Differences</h1>
+<p>The SDiD estimator (Arkhangelsky et al., 2021) constructs a synthetic control group by reweighting both units and time periods to match the treated group’s pre-treatment trajectory. Unlike TWFE, it does not use a single reference period—the comparison is between the treated group and its synthetic counterfactual at each point in time.</p>
+<p>These estimates were produced in a separate analysis. For each post-treatment period <span class="math inline">\(k\)</span>, SDiD was estimated using all pre-treatment data plus period <span class="math inline">\(k\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sdid_raw <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../../version4/output/sdid.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sdid_coefs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">period   =</span> sdid_raw[[<span class="dv">1</span>]],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">estimate =</span> sdid_raw<span class="sc">$</span>effects,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">se       =</span> sdid_raw<span class="sc">$</span>se</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">conf.low  =</span> estimate <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">conf.high =</span> estimate <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sdid_coefs <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(., <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Period"</span>,<span class="st">"Effect"</span>,<span class="st">"SE"</span>,<span class="st">"CI Low"</span>,<span class="st">"CI High"</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Synthetic DiD period-by-period estimates (GPA points)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>,<span class="st">"condensed"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Synthetic DiD period-by-period estimates (GPA points)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Period</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Effect</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI Low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI High</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1.807</td>
+<td style="text-align: right;">0.148</td>
+<td style="text-align: right;">1.517</td>
+<td style="text-align: right;">2.097</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.940</td>
+<td style="text-align: right;">0.161</td>
+<td style="text-align: right;">0.624</td>
+<td style="text-align: right;">1.256</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-0.897</td>
+<td style="text-align: right;">0.162</td>
+<td style="text-align: right;">-1.214</td>
+<td style="text-align: right;">-0.579</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-1.823</td>
+<td style="text-align: right;">0.170</td>
+<td style="text-align: right;">-2.155</td>
+<td style="text-align: right;">-1.490</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.745</td>
+<td style="text-align: right;">0.150</td>
+<td style="text-align: right;">0.451</td>
+<td style="text-align: right;">1.038</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1.049</td>
+<td style="text-align: right;">0.154</td>
+<td style="text-align: right;">0.747</td>
+<td style="text-align: right;">1.351</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.943</td>
+<td style="text-align: right;">0.164</td>
+<td style="text-align: right;">0.621</td>
+<td style="text-align: right;">1.265</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.943</td>
+<td style="text-align: right;">0.174</td>
+<td style="text-align: right;">0.603</td>
+<td style="text-align: right;">1.284</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p><strong>Reading the SDiD results.</strong> The SDiD estimates show the same temporal pattern as TWFE: positive effects early in the treatment window (periods 5–6), turning negative in periods 7–8, then reverting to positive post-return (periods 9–12). The magnitudes differ because SDiD uses a different counterfactual construction, but the <strong>timing of the sign change</strong>—the turning point at period 7—is consistent with TWFE.</p>
+</section>
+<section id="sec-ipw" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Strategy 3: IPW-Weighted Event Study</h1>
+<p>If students who chose remote learning differ systematically from in-person students on observed characteristics, the TWFE estimates could be biased (even with student FEs, if these characteristics interact with time trends). We address this by:</p>
+<ol type="1">
+<li>Estimating propensity scores for remote-learning selection based on baseline demographics and pre-pandemic GPA trajectories (mean and slope from periods 1–3).</li>
+<li>Computing stabilized inverse-probability weights.</li>
+<li>Re-estimating the TWFE event study with these weights.</li>
+</ol>
+<p>If IPW-TWFE tracks the unweighted TWFE closely, it suggests that observable selection is not a major concern beyond what the student FEs already absorb.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_base <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">%in%</span> PRE_PERIODS) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(student_id) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">gpa_pre_mean =</span> <span class="fu">mean</span>(gpa, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">gpa_pre_slope =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(gpa)) <span class="sc">&gt;=</span> <span class="dv">2</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">coef</span>(<span class="fu">lm</span>(gpa <span class="sc">~</span> period))[[<span class="st">"period"</span>]],</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA_real_</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(df_base, <span class="at">by =</span> <span class="st">"student_id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ps_dat <span class="ot">&lt;-</span> df2 <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(student_id, ever_remote, bl_school_id, bl_grade, bl_female, bl_frpl,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>           bl_sped, bl_ell, bl_race_cat, bl_home_language, gpa_pre_mean, gpa_pre_slope) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gpa_pre_mean), <span class="sc">!</span><span class="fu">is.na</span>(gpa_pre_slope))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ps_fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  ever_remote <span class="sc">~</span> bl_school_id <span class="sc">+</span> bl_grade <span class="sc">+</span> bl_female <span class="sc">+</span> bl_frpl <span class="sc">+</span> bl_sped <span class="sc">+</span> bl_ell <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    bl_race_cat <span class="sc">+</span> bl_home_language <span class="sc">+</span> gpa_pre_mean <span class="sc">+</span> gpa_pre_slope,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ps_dat,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>ps_dat <span class="ot">&lt;-</span> ps_dat <span class="sc">%&gt;%</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(<span class="fu">predict</span>(ps_fit, <span class="at">type =</span> <span class="st">"response"</span>), <span class="fl">1e-3</span>), <span class="dv">1</span> <span class="sc">-</span> <span class="fl">1e-3</span>),</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">pr_t =</span> <span class="fu">mean</span>(ever_remote <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">w =</span> <span class="fu">ifelse</span>(ever_remote <span class="sc">==</span> <span class="dv">1</span>, pr_t <span class="sc">/</span> p, (<span class="dv">1</span> <span class="sc">-</span> pr_t) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>df_w <span class="ot">&lt;-</span> df2 <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(ps_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(student_id, w), <span class="at">by =</span> <span class="st">"student_id"</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Trim extreme weights at 99th percentile</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>cap <span class="ot">&lt;-</span> <span class="fu">quantile</span>(df_w<span class="sc">$</span>w, <span class="fl">0.99</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>df_w <span class="ot">&lt;-</span> df_w <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">w_trim =</span> <span class="fu">pmin</span>(w, cap))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m_ipw <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  gpa <span class="sc">~</span> <span class="fu">i</span>(period, ever_remote, <span class="at">ref =</span> REF_PERIOD) <span class="sc">|</span> student_id <span class="sc">+</span> period,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df_w,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> <span class="sc">~</span> w_trim,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="sc">~</span> student_id</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ipw_coefs <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(m_ipw, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">as.integer</span>(<span class="fu">gsub</span>(<span class="st">".*::(</span><span class="sc">\\</span><span class="st">d+):.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, term))) <span class="sc">%&gt;%</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(period, estimate, std.error, conf.low, conf.high, p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>comp_ipw <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  twfe_coefs <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"TWFE"</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  ipw_coefs  <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"IPW-TWFE"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(comp_ipw, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> estimate, <span class="at">color =</span> method, <span class="at">fill =</span> method)) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fl">4.5</span>, <span class="fl">8.5</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> pal[<span class="fu">c</span>(<span class="st">"TWFE"</span>,<span class="st">"IPW-TWFE"</span>)]) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> pal[<span class="fu">c</span>(<span class="st">"TWFE"</span>,<span class="st">"IPW-TWFE"</span>)]) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Period"</span>, <span class="at">y =</span> <span class="st">"Effect on GPA (relative to period 4)"</span>,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-ipw-vs-twfe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ipw-vs-twfe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="rob_files/figure-html/fig-ipw-vs-twfe-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ipw-vs-twfe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Unweighted TWFE (blue) vs.&nbsp;IPW-weighted TWFE (green). Both are relative to period 4.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Reading the IPW results.</strong> The IPW-weighted estimates closely track the unweighted TWFE. This suggests that observable baseline differences (demographics, pre-GPA level and trend) do not substantially confound the event-study estimates beyond what student fixed effects already absorb.</p>
+</section>
+<section id="sec-drdid" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Strategy 4: Doubly Robust DiD (Period-by-Period)</h1>
+<p>The DR-DiD estimator of Sant’Anna and Zhao (2020) combines IPW with outcome regression. It is <em>doubly robust</em>: consistent if <em>either</em> the propensity score model or the outcome model is correctly specified.</p>
+<p>To produce an event-study-style plot, we estimate a separate DR-DiD for each post-treatment period <span class="math inline">\(k \in \{5, \ldots, 12\}\)</span>:</p>
+<ul>
+<li><span class="math inline">\(y_0\)</span> = student’s mean GPA in periods 1–3 (pre-treatment baseline)</li>
+<li><span class="math inline">\(y_1\)</span> = student’s GPA in period <span class="math inline">\(k\)</span></li>
+<li>ATT for period <span class="math inline">\(k\)</span> = differential change for remote students relative to non-remote students, adjusted for covariates.</li>
+</ul>
+<p><strong>Important:</strong> Because the baseline here is the pre-treatment <em>mean</em> (periods 1–3), not period 4, these estimates capture both secular trends and treatment effects. A positive DR-DiD estimate in period 5 does not mean remote students benefited—it means their GPA rose more <em>from their pre-treatment average</em> than non-remote students’ did, which could simply reflect the upward pre-trend seen in the TWFE.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dr_base <span class="ot">&lt;-</span> df_w <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">%in%</span> PRE_PERIODS) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(student_id, ever_remote) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">gpa_pre =</span> <span class="fu">mean</span>(gpa, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    ps_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(student_id, bl_school_id, bl_grade, bl_female, bl_frpl,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                      bl_sped, bl_ell, bl_race_cat, bl_home_language,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                      gpa_pre_mean, gpa_pre_slope),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"student_id"</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(gpa_pre), <span class="sc">!</span><span class="fu">is.na</span>(gpa_pre_mean), <span class="sc">!</span><span class="fu">is.na</span>(gpa_pre_slope))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>post_periods <span class="ot">&lt;-</span> <span class="fu">c</span>(TREAT_WINDOW, POST_PERIODS)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>dr_results <span class="ot">&lt;-</span> <span class="fu">lapply</span>(post_periods, <span class="cf">function</span>(k) {</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  gpa_k <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(period <span class="sc">==</span> k) <span class="sc">%&gt;%</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(student_id, <span class="at">gpa_k =</span> gpa)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  dat_k <span class="ot">&lt;-</span> dr_base <span class="sc">%&gt;%</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">inner_join</span>(gpa_k, <span class="at">by =</span> <span class="st">"student_id"</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  X_k <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> bl_school_id <span class="sc">+</span> bl_grade <span class="sc">+</span> bl_female <span class="sc">+</span> bl_frpl <span class="sc">+</span> bl_sped <span class="sc">+</span> bl_ell <span class="sc">+</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>      bl_race_cat <span class="sc">+</span> bl_home_language <span class="sc">+</span> gpa_pre_mean <span class="sc">+</span> gpa_pre_slope,</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat_k</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  )[, <span class="sc">-</span><span class="dv">1</span>, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drdid_panel</span>(</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">y1 =</span> dat_k<span class="sc">$</span>gpa_k,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">y0 =</span> dat_k<span class="sc">$</span>gpa_pre,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">D  =</span> dat_k<span class="sc">$</span>ever_remote,</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">covariates =</span> X_k</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fu">list</span>(<span class="at">ATT =</span> <span class="cn">NA_real_</span>, <span class="at">se =</span> <span class="cn">NA_real_</span>)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">period    =</span> k,</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate  =</span> out<span class="sc">$</span>ATT,</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">se        =</span> out<span class="sc">$</span>se,</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">conf.low  =</span> out<span class="sc">$</span>ATT <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> out<span class="sc">$</span>se,</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">conf.high =</span> out<span class="sc">$</span>ATT <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> out<span class="sc">$</span>se</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>drdid_coefs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dr_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>drdid_coefs <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(., <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Period"</span>,<span class="st">"ATT"</span>,<span class="st">"SE"</span>,<span class="st">"CI Low"</span>,<span class="st">"CI High"</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Doubly robust DiD: ATT per period (each period vs. pre-treatment mean of periods 1–3)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>,<span class="st">"condensed"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Doubly robust DiD: ATT per period (each period vs. pre-treatment mean of periods 1–3)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Period</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">ATT</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI Low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI High</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2.335</td>
+<td style="text-align: right;">0.188</td>
+<td style="text-align: right;">1.967</td>
+<td style="text-align: right;">2.702</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.905</td>
+<td style="text-align: right;">0.209</td>
+<td style="text-align: right;">1.494</td>
+<td style="text-align: right;">2.315</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-0.347</td>
+<td style="text-align: right;">0.209</td>
+<td style="text-align: right;">-0.756</td>
+<td style="text-align: right;">0.062</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-1.584</td>
+<td style="text-align: right;">0.235</td>
+<td style="text-align: right;">-2.045</td>
+<td style="text-align: right;">-1.123</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.456</td>
+<td style="text-align: right;">0.251</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">0.948</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.953</td>
+<td style="text-align: right;">0.220</td>
+<td style="text-align: right;">0.521</td>
+<td style="text-align: right;">1.385</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.876</td>
+<td style="text-align: right;">0.236</td>
+<td style="text-align: right;">0.413</td>
+<td style="text-align: right;">1.338</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.825</td>
+<td style="text-align: right;">0.264</td>
+<td style="text-align: right;">0.307</td>
+<td style="text-align: right;">1.342</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>comp_dr <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  twfe_coefs  <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"TWFE"</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  drdid_coefs <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"DR-DiD"</span>, <span class="at">p.value =</span> <span class="cn">NA</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(comp_dr, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> estimate, <span class="at">color =</span> method, <span class="at">fill =</span> method)) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fl">4.5</span>, <span class="fl">8.5</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> pal[<span class="fu">c</span>(<span class="st">"TWFE"</span>,<span class="st">"DR-DiD"</span>)]) <span class="sc">+</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> pal[<span class="fu">c</span>(<span class="st">"TWFE"</span>,<span class="st">"DR-DiD"</span>)]) <span class="sc">+</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Period"</span>, <span class="at">y =</span> <span class="st">"Estimated effect on GPA"</span>,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-drdid-vs-twfe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-drdid-vs-twfe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="rob_files/figure-html/fig-drdid-vs-twfe-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-drdid-vs-twfe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: TWFE (blue, ref = period 4) vs.&nbsp;DR-DiD (orange, ref = pre-treatment mean). The different baselines explain the level shift, but the temporal pattern should be comparable.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Reading the DR-DiD results.</strong> The DR-DiD estimates are shifted upward relative to TWFE because their baseline is the pre-treatment mean (periods 1–3), a time when remote students’ GPA was lower. Both the TWFE and DR-DiD show the same <strong>downward slope</strong> across the treatment window: a decline from period 5 to period 8. The key pattern—a steep drop in periods 7–8—is consistent.</p>
+</section>
+<section id="sec-honestdid" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Pre-Trend Sensitivity: HonestDiD</h1>
+<section id="the-problem" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="the-problem"><span class="header-section-number">8.1</span> The problem</h2>
+<p>The TWFE pre-period coefficients (<span class="math inline">\(\beta_1\)</span> through <span class="math inline">\(\beta_3\)</span>) are large and significant, indicating that remote and in-person students were on different GPA trajectories <em>before</em> treatment. This violates the parallel-trends assumption that DiD requires for causal interpretation.</p>
+<p>A common reaction is to check whether pre-trends “look flat.” But in our data they clearly do not: remote students were converging toward in-person students pre-treatment. The question becomes: <strong>how much does this pre-trend contaminate the treatment-window estimates?</strong></p>
+</section>
+<section id="what-honestdid-does" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="what-honestdid-does"><span class="header-section-number">8.2</span> What HonestDiD does</h2>
+<p>The HonestDiD framework (Rambachan &amp; Roth, 2023) addresses this by relaxing the parallel-trends assumption in a controlled way. Instead of assuming zero trend violation post-treatment, it asks:</p>
+<blockquote class="blockquote">
+<p><em>What can we conclude about the treatment effect if the post-treatment trend violation is at most <span class="math inline">\(\bar{M}\)</span> times as large as the worst pre-treatment violation?</em></p>
+</blockquote>
+<p>The parameter <span class="math inline">\(\bar{M}\)</span> indexes how much we trust parallel trends:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 55%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(\bar{M}\)</span></th>
+<th style="text-align: left;">What it assumes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: left;">Exact parallel trends (standard DiD)—post-treatment differences are entirely causal</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.5</td>
+<td style="text-align: left;">Post-treatment trend deviations are at most half the pre-treatment size</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Post-treatment deviations can be as large as the worst pre-treatment deviation</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Post-treatment deviations can be twice the pre-treatment size</td>
+</tr>
+</tbody>
+</table>
+<p>For each <span class="math inline">\(\bar{M}\)</span>, HonestDiD computes a <strong>robust 95% confidence set</strong>—a range of treatment effects consistent with both the data and the assumed bound on trend violations. As <span class="math inline">\(\bar{M}\)</span> increases, the confidence set widens because more of the observed difference can be attributed to trends rather than treatment.</p>
+</section>
+<section id="how-to-read-the-results" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="how-to-read-the-results"><span class="header-section-number">8.3</span> How to read the results</h2>
+<ul>
+<li><strong>lb</strong> and <strong>ub</strong>: lower and upper bounds of the confidence set.</li>
+<li>If the confidence set excludes zero, the treatment effect is statistically significant even allowing for the assumed trend violation.</li>
+<li>The <strong>breakdown value</strong> is the smallest <span class="math inline">\(\bar{M}\)</span> at which the confidence set includes zero. A large breakdown value (&gt; 1) means the result is robust; a small one (&lt; 0.5) means it is fragile.</li>
+</ul>
+</section>
+<section id="results" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="results"><span class="header-section-number">8.4</span> Results</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>m_sens <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  gpa <span class="sc">~</span> <span class="fu">i</span>(period, ever_remote, <span class="at">ref =</span> REF_PERIOD) <span class="sc">|</span> student_id <span class="sc">+</span> period,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df2,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="sc">~</span> student_id</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(m_sens)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">vcov</span>(m_sens)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^period::</span><span class="sc">\\</span><span class="st">d+:ever_remote$"</span>, <span class="fu">names</span>(b))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(idx) <span class="sc">==</span> <span class="dv">0</span>) idx <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"ever_remote::period::"</span>, <span class="fu">names</span>(b))</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(idx) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">stop</span>(<span class="st">"Could not find event-study coefficients."</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>betahat <span class="ot">&lt;-</span> b[idx]</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> V[idx, idx]</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>tt <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">gsub</span>(<span class="st">"^period::(</span><span class="sc">\\</span><span class="st">d+):ever_remote$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, <span class="fu">names</span>(betahat)))</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>pre_mask  <span class="ot">&lt;-</span> tt <span class="sc">%in%</span> PRE_PERIODS</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>post_mask <span class="ot">&lt;-</span> tt <span class="sc">%in%</span> TREAT_WINDOW</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>ord <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">which</span>(pre_mask), <span class="fu">which</span>(post_mask))</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>betahat2 <span class="ot">&lt;-</span> betahat[ord]</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>sigma2 <span class="ot">&lt;-</span> sigma[ord, ord]</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>Mbar_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(betahat[pre_mask]))</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>Mbarvec <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">2</span> <span class="sc">*</span> Mbar_max, <span class="at">length.out =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The largest pre-period coefficient (in absolute value) is <strong>1.85</strong> GPA points—a substantial pre-trend. We evaluate sensitivity from <span class="math inline">\(\bar{M} = 0\)</span> to <span class="math inline">\(\bar{M} = 2\)</span> (i.e., allowing post-treatment violations up to 3.7 GPA points).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sens <span class="ot">&lt;-</span> <span class="fu">createSensitivityResults_relativeMagnitudes</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">betahat =</span> betahat2,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sigma =</span> sigma2,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">numPrePeriods =</span> <span class="fu">sum</span>(pre_mask),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">numPostPeriods =</span> <span class="fu">sum</span>(post_mask),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Mbarvec =</span> Mbarvec</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sens_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(sens)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>sens_df <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(., <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"HonestDiD: robust 95% confidence sets at each Mbar level"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>,<span class="st">"condensed"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>HonestDiD: robust 95% confidence sets at each Mbar level</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">lb</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">ub</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">method</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Delta</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mbar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.582</td>
+<td style="text-align: right;">1.226</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.095</td>
+<td style="text-align: right;">1.634</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">0.411</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.464</td>
+<td style="text-align: right;">2.134</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">0.822</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-1.036</td>
+<td style="text-align: right;">2.666</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">1.234</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-1.608</td>
+<td style="text-align: right;">3.219</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">1.645</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.186</td>
+<td style="text-align: right;">3.284</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">2.056</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.765</td>
+<td style="text-align: right;">3.284</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">2.467</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-3.284</td>
+<td style="text-align: right;">3.284</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">2.879</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-3.284</td>
+<td style="text-align: right;">3.284</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">3.290</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-3.284</td>
+<td style="text-align: right;">3.284</td>
+<td style="text-align: left;">C-LF</td>
+<td style="text-align: left;">DeltaRM</td>
+<td style="text-align: right;">3.701</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the breakdown value: smallest Mbar where CI includes zero</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>breakdown_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(sens_df<span class="sc">$</span>lb <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> sens_df<span class="sc">$</span>ub <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(breakdown_idx) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  breakdown_val <span class="ot">&lt;-</span> sens_df<span class="sc">$</span>Mbar[<span class="fu">min</span>(breakdown_idx)]</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste0</span>(</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"**Breakdown value: $</span><span class="sc">\\</span><span class="st">bar{M} </span><span class="sc">\\</span><span class="st">approx "</span>, <span class="fu">round</span>(breakdown_val, <span class="dv">2</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$.** The negative treatment effect remains significant as long as "</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"the post-treatment trend violation is less than "</span>, <span class="fu">round</span>(breakdown_val, <span class="dv">2</span>),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">" times the worst pre-treatment violation. "</span>))</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(breakdown_val <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"Since the breakdown value exceeds 1, the result is fairly robust: post-treatment violations would need to be *larger* than anything observed pre-treatment to explain away the effect.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(breakdown_val <span class="sc">&gt;=</span> <span class="fl">0.5</span>) {</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"This is a moderate breakdown value. The result is somewhat sensitive to parallel-trends violations---a post-treatment deviation only moderately larger than the pre-treatment pattern could explain away the negative effect.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">"This is a small breakdown value, indicating the result is sensitive to even modest violations of parallel trends.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"The confidence set **never includes zero** over the full range of $</span><span class="sc">\\</span><span class="st">bar{M}$ values tested. The negative treatment effect is robust to substantial departures from parallel trends.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p><strong>Breakdown value: <span class="math inline">\(\bar{M} \approx 0.82\)</span>.</strong> The negative treatment effect remains significant as long as the post-treatment trend violation is less than 0.82 times the worst pre-treatment violation. This is a moderate breakdown value. The result is somewhat sensitive to parallel-trends violations—a post-treatment deviation only moderately larger than the pre-treatment pattern could explain away the negative effect.</p>
+</section>
+</section>
+<section id="sec-summary" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Summary</h1>
+<section id="all-methods-overlaid" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="all-methods-overlaid"><span class="header-section-number">9.1</span> All methods overlaid</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>comp_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  twfe_coefs  <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"TWFE"</span>),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  sdid_coefs  <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"SDiD"</span>, <span class="at">p.value =</span> <span class="cn">NA</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  ipw_coefs   <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"IPW-TWFE"</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  drdid_coefs <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">method =</span> <span class="st">"DR-DiD"</span>, <span class="at">p.value =</span> <span class="cn">NA</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(comp_all, <span class="fu">aes</span>(<span class="at">x =</span> period, <span class="at">y =</span> estimate, <span class="at">color =</span> method, <span class="at">fill =</span> method)) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray40"</span>) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fl">4.5</span>, <span class="fl">8.5</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">alpha =</span> <span class="fl">0.08</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="fl">4.5</span>, <span class="at">xmax =</span> <span class="fl">8.5</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.04</span>, <span class="at">fill =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="cn">Inf</span>, <span class="at">label =</span> <span class="st">"Pre-treatment"</span>, <span class="at">vjust =</span> <span class="fl">1.5</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">3.2</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">6.5</span>, <span class="at">y =</span> <span class="cn">Inf</span>, <span class="at">label =</span> <span class="st">"Treatment window"</span>, <span class="at">vjust =</span> <span class="fl">1.5</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">3.2</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">10.5</span>, <span class="at">y =</span> <span class="cn">Inf</span>, <span class="at">label =</span> <span class="st">"Post-return"</span>, <span class="at">vjust =</span> <span class="fl">1.5</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">3.2</span>, <span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> pal) <span class="sc">+</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> pal) <span class="sc">+</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Period"</span>, <span class="at">y =</span> <span class="st">"Estimated effect on GPA"</span>,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-all-methods" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-all-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="rob_files/figure-html/fig-all-methods-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-all-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: All four estimation strategies. Blue = TWFE (ref: period 4); Red = SDiD (ref: synthetic counterfactual); Green = IPW-TWFE (ref: period 4); Orange = DR-DiD (ref: pre-treatment mean). The different reference points explain the level differences; the temporal patterns should be compared.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="period-by-period-comparison-table" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="period-by-period-comparison-table"><span class="header-section-number">9.2</span> Period-by-period comparison table</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>full_comp <span class="ot">&lt;-</span> twfe_coefs <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(period, <span class="at">twfe =</span> estimate, <span class="at">twfe_se =</span> std.error) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(sdid_coefs <span class="sc">%&gt;%</span> <span class="fu">select</span>(period, <span class="at">sdid =</span> estimate, <span class="at">sdid_se =</span> se), <span class="at">by =</span> <span class="st">"period"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ipw_coefs <span class="sc">%&gt;%</span> <span class="fu">select</span>(period, <span class="at">ipw =</span> estimate, <span class="at">ipw_se =</span> std.error), <span class="at">by =</span> <span class="st">"period"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(drdid_coefs <span class="sc">%&gt;%</span> <span class="fu">select</span>(period, <span class="at">drdid =</span> estimate, <span class="at">drdid_se =</span> se), <span class="at">by =</span> <span class="st">"period"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>full_comp <span class="sc">%&gt;%</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(., <span class="dv">2</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">ifelse</span>(<span class="fu">is.na</span>(.), <span class="st">""</span>, .))) <span class="sc">%&gt;%</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Period"</span>,<span class="st">"Est."</span>,<span class="st">"SE"</span>,<span class="st">"Est."</span>,<span class="st">"SE"</span>,<span class="st">"Est."</span>,<span class="st">"SE"</span>,<span class="st">"Est."</span>,<span class="st">"SE"</span>),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"All estimates side-by-side (GPA points). Note different baselines."</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>,<span class="st">"condensed"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"TWFE (ref: P4)"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"SDiD"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"IPW-TWFE (ref: P4)"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"DR-DiD (ref: P1–3)"</span> <span class="ot">=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>All estimates side-by-side (GPA points). Note different baselines.</caption>
+<colgroup>
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+TWFE (ref: P4)
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+SDiD
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+IPW-TWFE (ref: P4)
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+DR-DiD (ref: P1–3)
+</div></th>
+</tr>
+<tr class="even">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Period</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Est.</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Est.</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Est.</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Est.</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">SE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1.85</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">-1.58</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-1.58</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">-1.69</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-1.18</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">-1.54</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: left;">1.81</td>
+<td style="text-align: left;">0.15</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: left;">2.33</td>
+<td style="text-align: left;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;">0.16</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: left;">1.9</td>
+<td style="text-align: left;">0.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">-1.90</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: left;">-0.9</td>
+<td style="text-align: left;">0.16</td>
+<td style="text-align: right;">-1.68</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: left;">-0.35</td>
+<td style="text-align: left;">0.21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-2.80</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: left;">-1.82</td>
+<td style="text-align: left;">0.17</td>
+<td style="text-align: right;">-2.74</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: left;">-1.58</td>
+<td style="text-align: left;">0.24</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: left;">0.74</td>
+<td style="text-align: left;">0.15</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">0.25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: left;">1.05</td>
+<td style="text-align: left;">0.15</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: left;">0.95</td>
+<td style="text-align: left;">0.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">-0.26</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;">0.16</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: left;">0.88</td>
+<td style="text-align: left;">0.24</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">-0.24</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;">0.17</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: left;">0.82</td>
+<td style="text-align: left;">0.26</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="treatment-window-averages" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="treatment-window-averages"><span class="header-section-number">9.3</span> Treatment-window averages</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>treat_summary <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  twfe_coefs <span class="sc">%&gt;%</span> <span class="fu">filter</span>(period <span class="sc">%in%</span> TREAT_WINDOW) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">method =</span> <span class="st">"TWFE (ref: period 4)"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">mean_est =</span> <span class="fu">mean</span>(estimate), <span class="at">mean_se =</span> <span class="fu">mean</span>(std.error)),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  sdid_coefs <span class="sc">%&gt;%</span> <span class="fu">filter</span>(period <span class="sc">%in%</span> TREAT_WINDOW) <span class="sc">%&gt;%</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">method =</span> <span class="st">"SDiD"</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">mean_est =</span> <span class="fu">mean</span>(estimate), <span class="at">mean_se =</span> <span class="fu">mean</span>(se)),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  ipw_coefs <span class="sc">%&gt;%</span> <span class="fu">filter</span>(period <span class="sc">%in%</span> TREAT_WINDOW) <span class="sc">%&gt;%</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">method =</span> <span class="st">"IPW-TWFE (ref: period 4)"</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">mean_est =</span> <span class="fu">mean</span>(estimate), <span class="at">mean_se =</span> <span class="fu">mean</span>(std.error)),</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  drdid_coefs <span class="sc">%&gt;%</span> <span class="fu">filter</span>(period <span class="sc">%in%</span> TREAT_WINDOW) <span class="sc">%&gt;%</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">method =</span> <span class="st">"DR-DiD (ref: pre-treatment mean)"</span>,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">mean_est =</span> <span class="fu">mean</span>(estimate), <span class="at">mean_se =</span> <span class="fu">mean</span>(se))</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>treat_summary <span class="sc">%&gt;%</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(., <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Method"</span>,<span class="st">"Mean Effect (P5–8)"</span>,<span class="st">"Mean SE"</span>),</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Treatment-window averages. The level differences across methods reflect different baselines, not disagreement."</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>,<span class="st">"condensed"</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Treatment-window averages. The level differences across methods reflect different baselines, not disagreement.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Method</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean Effect (P5–8)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean SE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">TWFE (ref: period 4)</td>
+<td style="text-align: right;">-0.931</td>
+<td style="text-align: right;">0.173</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SDiD</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">0.160</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IPW-TWFE (ref: period 4)</td>
+<td style="text-align: right;">-0.855</td>
+<td style="text-align: right;">0.189</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DR-DiD (ref: pre-treatment mean)</td>
+<td style="text-align: right;">0.577</td>
+<td style="text-align: right;">0.210</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="key-takeaways" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="key-takeaways"><span class="header-section-number">9.4</span> Key takeaways</h2>
+<ol type="1">
+<li><p><strong>All estimators agree on the temporal pattern.</strong> Across TWFE, SDiD, IPW-TWFE, and DR-DiD, the treatment-window estimates decline from period 5 to period 8. The sharpest drops are in periods 7–8, consistent with a cumulative negative effect of remote learning.</p></li>
+<li><p><strong>Level differences reflect different baselines, not disagreement.</strong> SDiD averages near zero across periods 5–8 because it balances large positive (periods 5–6) and negative (periods 7–8) effects. DR-DiD estimates are shifted upward because their baseline is the pre-treatment mean (periods 1–3), when remote students’ GPA was lower than at period 4. When accounting for these baseline differences, the estimators tell a consistent story.</p></li>
+<li><p><strong>IPW weighting changes little.</strong> The IPW-TWFE estimates track unweighted TWFE closely, indicating that observable selection into remote learning is not a major confounder beyond what student fixed effects absorb.</p></li>
+<li><p><strong>Pre-trends are a real concern.</strong> The TWFE pre-period coefficients are large (up to 1.9 GPA points), indicating that remote students were on a different trajectory before treatment. The HonestDiD analysis quantifies how this affects the treatment-window estimates: the breakdown value of <span class="math inline">\(\bar{M} \approx\)</span> 0.82 indicates the degree of robustness to this pre-trend.</p></li>
+<li><p><strong>Period 8 stands out.</strong> Across all methods, the largest negative effect is at period 8—the final quarter of the remote-learning window. This is consistent with a cumulative harm from sustained remote instruction that reverses partially after return to in-person.</p></li>
+</ol>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
